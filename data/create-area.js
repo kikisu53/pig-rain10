@@ -10,11 +10,11 @@ request(url, function (error, response, body) {
             <td>新北市烏來區</td>
             <td><span title='C0A56 福山里李茂岸8號(福山國小旁)'>福山 (C0A56)</span>
     output:
-        list = array[city_id, city, county, spot_id, spot_addr, spot_name, county_id]
+        list = array[city_id, city, county, spot_id, spot_addr, spot_name, '']
 */
     list = body.match(/Area.+<\/span>/g)
-                .map( (v,i) => 
-                    (v+'C'+i).replace(/\s/g,'')
+                .map( v => 
+                    v.replace(/\s/g,'')
                         .replace(/<\/|[>/=']|title|span|\([0-9A-Z]{5}\)|td/g,'<')
                         .replace(/(<)+/g, '<')
                         .replace(/.{2}[縣市]/, s => ''+s+'<')
@@ -43,9 +43,14 @@ request(url, function (error, response, body) {
     //  ...
     //}
     area ={};
+    var county = {}, i=1;
     list.map( v => {
         if(area[v[0]]===undefined) area[v[0]]={};
-        area[v[0]][v[6]] = v[2];
+        if(county[v[2]]===undefined) {
+            county[v[2]] = 'C'+i;
+            i++;
+        }
+        area[v[0]][county[v[2]]] = v[2];
     });
     writeJson('pig-county.json',JSON.stringify(area));
     //writefile: pig-stop.json
@@ -57,8 +62,9 @@ request(url, function (error, response, body) {
     //}
     area ={};
     list.map( v => {
-        if(area[v[6]]===undefined) area[v[6]]={};
-        area[v[6]][v[3]] = {
+        let countyid = county[v[2]];
+        if(area[countyid]===undefined) area[countyid]={};
+        area[countyid][v[3]] = {
             name: v[5],
             addr: v[4]
         }
