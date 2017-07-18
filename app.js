@@ -9,7 +9,7 @@ var csurf = require('csurf')
 
 var index = require('./routes/index');
 var list = require('./routes/list');
-
+var connect = require('./lib/connect')
 var app = express();
 
 // view engine setup
