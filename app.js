@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/list', function(req, res, next) {
-  if (!logined) res.redirect('/');
+  //if (!logined) res.redirect('/');
   next();
 })
 app.use('/list', list);
