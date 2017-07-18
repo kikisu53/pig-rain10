@@ -1,6 +1,115 @@
 body {
-  padding: 50px;
+  color: 	#2F4F4F;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+li {
+  display: none;
+  border: #2F4F4F 0.1px solid;
+  width: 50px;
+  float: right;
+  padding: 5px;
+  margin: 0 5px 0 5px;
+}
+
+ul:hover li{
+  display: inline-block;
+}
+
+li:hover {
+  background-color: #2F4F4F;
+  color: #FFF;
+}
+
+.container {
+  width: 100%;
+}
+
+.header {
+  padding-top: 2%;
+}
+
+.content{
+  width: 100%;
+}
+
+
+.content p {
+    display: inline-block;
+    margin: 10px 10px 10px 20px;
+}
+
+.topbar {
+  width: 25%;
+  height: 30px;
+  position: relative;
+  border-radius: 10px;
+  background-color: #2F4F4F;
+  margin: 10px 37.5% 10px 37.5%;
+  padding: 5px;
+  box-shadow: 0.2px 0.2px 2px #FFFACD;
+  color: #FFFACD;
+
+}
+
+.topbar p {
+  margin: 5px 25px 5px 25px;
+}
+
+.box {
+  width: 25%;
+  position: relative;
+  border-radius: 10px;
+  background-color: #FFFACD;
+  margin: 10px 37.5% 10px 37.5%;
+  padding: 5px;
+  box-shadow: 0.2px 0.2px 2px #2F4F4F;
+  color: #2F4F4F;
+}
+
+.content input {
+  border: #2F4F4F 0.2px solid;
+  border-radius: 5px;
+}
+
+.content #button {
+  border: #2F4F4F 0.2px solid;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  background-color: #2F4F4F;
+  color: #FFF;
+}
+
+.content #button:hover {
+  border: #CC0000 0.2px solid;
+  background-color: #CC0000;
+  color: #FFFF00;
+}
+
+.createbox {
+  width: 25%;
+  position: relative;
+  border-radius: 10px;
+  background-color: #FFF;
+  margin: 10px 37.5% 10px 37.5%;
+  padding: 5px;
+  box-shadow: 0.2px 0.2px 2px #2F4F4F;
+  color: #2F4F4F;
+}
+
+form span {
+  color: #CC0000;
+}
+
+.footer {
+  padding-top: 20%;
+  color: #2F4F4F;
+}
+
+.footer h5{
+  display: inline-block;
+  margin: 10px;
 }
 
 a {
