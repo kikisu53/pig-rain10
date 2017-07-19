@@ -72,9 +72,9 @@ request(url, function (error, response, body) {
     writeJson('pig-stop.json',JSON.stringify(area));
 });
 
-var date = new Date().toUTCString();
+//var date = new Date().toUTCString();
 function writeJson(filename, data){
-    fs.writeFile(__dirname+'/'+filename, '//update time:'+date+'\r\n'+data,function(error){ //把資料寫入檔案
+    fs.writeFile(__dirname+'/'+filename, data,function(error){ //把資料寫入檔案
         if(error){ //如果有錯誤，把訊息顯示並離開程式
             console.log('檔案'+filename+'寫入錯誤');
         }

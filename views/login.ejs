@@ -14,14 +14,15 @@
       <div class='content'>
         <div class="box">
           <h3>會員登入</h3>
-          <form action="http://localhost:3000/login" method ="post" >
+          <form action="/login" method ="post" >
 
-            <p>帳號&nbsp;<input type="text" name="user-email"></p>
+            <p>帳號&nbsp;<input type="text" name="user_email"></p>
             <p>密碼&nbsp;<input type="password" name="password"></p><br>
-  <!--<input type="hidden" name="_csrf" value="<%= csrfToken %>">-->
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input id='button' type="submit" value="登入">
-            <input id='button' type="button" value="忘記密碼">
-
+            <input id='button' type="button" onclick="javascript:location.href='/forget'" value="忘記密碼">
+            <input id='button' type="button" onclick="javascript:location.href='/register'" value="註冊">
+            
           </form>
         </div>
       </div>
