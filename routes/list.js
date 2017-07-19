@@ -3,28 +3,22 @@ var router = express.Router();
 var fs = require('fs');
 
 /*load jsonfile to form*/
-router.all('*', function(req, res, next){
-  fs.readFile('data/pig-city.json', function(err, data){
-    if(err) console.error(err);
-    res.locals.city = JSON.parse(data);
-    next();
-  });
-  fs.readFile('data/pig-county.json', function(err, data){
-    if(err) console.error(err);
-    res.locals.county = JSON.parse(data);
-    next();
-  });
-
-
+router.use(function(req, res, next){
+  res.locals.city = JSON.parse(fs.readFileSync('data/pig-city.json'));
+  res.locals.county = JSON.parse(fs.readFileSync('data/pig-county.json'));
+  next();
 });
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   var city = Object.keys(res.locals.city).map(function(e) {
     return [e.toString(), res.locals.city[e]];
   });
-  //console.log(res.locals.county)
+  var county = res.locals.county;
+  console.log(res.locals.county);
+  
   res.render('list', {
-    city
+    city,
+    county
   });
   //userEmail
   //res.send('respond with a resource');
