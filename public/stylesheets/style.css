@@ -4,12 +4,16 @@ body {
 }
 
 li {
-  display: none;
+  display: block;
   border: #2F4F4F 0.1px solid;
   width: 50px;
   float: right;
   padding: 5px;
   margin: 0 5px 0 5px;
+}
+
+ul li {
+  display: none;
 }
 
 ul:hover li{
@@ -22,6 +26,9 @@ li:hover {
 }
 
 .container {
+  background-image: url("http://pngimages.net/sites/default/files/rain-png-image-24401.png");
+  background-repeat: repeat-x;
+  background-position: -30px 100px;
   width: 100%;
 }
 
@@ -30,7 +37,7 @@ li:hover {
 }
 
 .content{
-  width: 100%;
+  width: 30%;
 }
 
 
@@ -40,28 +47,26 @@ li:hover {
 }
 
 .topbar {
-  width: 25%;
+  width: 100%;
   height: 30px;
   position: relative;
   border-radius: 10px;
   background-color: #2F4F4F;
-  margin: 10px 37.5% 10px 37.5%;
   padding: 5px;
   box-shadow: 0.2px 0.2px 2px #FFFACD;
   color: #FFFACD;
-
 }
 
 .topbar p {
-  margin: 5px 25px 5px 25px;
+  margin: 5px 20px 5px 20px;
 }
 
 .box {
-  width: 25%;
+  width: 100%;
   position: relative;
   border-radius: 10px;
   background-color: #FFFACD;
-  margin: 10px 37.5% 10px 37.5%;
+  margin: 5px 0px 5px 0px;
   padding: 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
@@ -70,6 +75,7 @@ li:hover {
 .content input {
   border: #2F4F4F 0.2px solid;
   border-radius: 5px;
+  font-size: 14px;
 }
 
 .content #button {
@@ -88,11 +94,10 @@ li:hover {
 }
 
 .createbox {
-  width: 25%;
+  width: 100%;
   position: relative;
   border-radius: 10px;
   background-color: #FFF;
-  margin: 10px 37.5% 10px 37.5%;
   padding: 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
@@ -102,8 +107,15 @@ form span {
   color: #CC0000;
 }
 
+select {
+  color: #2F4F4F;
+  border: #2F4F4F 0.1px solid;
+  height: 25px;
+  background-color: #FFF;
+}
+
 .footer {
-  padding-top: 20%;
+  padding-top: 10%;
   color: #2F4F4F;
 }
 

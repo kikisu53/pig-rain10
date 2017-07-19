@@ -6,10 +6,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <ul align='right' style="padding-right:20%">
-      Welcome Tingru!
-      <li>logout</li>
+    <ul align='right' style="padding-right:10%;">
+      <span>Welcome Tingru ▼</span>
+      <li>service</li>
     </ul>
+    <li>logout</li>
     <hr>
     <div class='container' align='center'>
       <div class='header'>
@@ -18,21 +19,21 @@
       </div>
       <div class='content' align='left'>
         <div class='topbar'>
-          <p>Area</p>
-          <p>Rain</p>
-          <p>TimeSpan</p>
+          <p>地區</p>
+          <p>時間間隔</p>
+          <p>雨量（公釐）</p>
         </div>
         <div class='box'>
           <p>新北市新店</p>
           <p>10公釐</p>
           <p>10分鐘</p>
-          <p id='button'>Delete</p>
+          <p id='button'>刪除通知</p>
         </div>
         <div class='box'>
           <p>台中市西屯</p>
           <p>15公釐</p>
           <p>1小時</p>
-          <p id='button'>Delete</p>
+          <p id='button'>刪除通知</p>
         </div>
         <p></p>
         <div class='createbox' align='left'>
@@ -47,8 +48,8 @@
             </select>
             <select name="county">
 　            <option>請選擇鄉鎮區</option>
-              <% city.forEach(function(city) { %>
-              <option value="<%= city[0] %>"><%= city[1] %></option>
+              <% county.forEach(function(county) { %>
+              <option value="<%= county[0] %>"><%= county[1][1] %></option>
 　            <% }); %>
             </select>
             <select name="stop">
@@ -57,10 +58,17 @@
               <option value="<%= city[0] %>"><%= city[1] %></option>
 　            <% }); %>
             </select><br>
-            <p><span>*</span>雨量
-              <input type="text" name="threshold">
-            公釐</p>
+            <p><span>*</span>間隔</p>
+            <select name="timespan">
+　            <option>請選擇間隔</option>
+              <% city.forEach(function(city) { %>
+              <option value="<%= city[0] %>"><%= city[1] %></option>
+　            <% }); %>
+            </select><br>
+            <p><span>*</span>雨量</p>
+            <input type="text" size='8' name="threshold">公釐
 
+            <input id='button' type="submit" value="新增通知">
           </form>
         </div>
       </div>
