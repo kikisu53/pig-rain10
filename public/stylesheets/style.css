@@ -38,8 +38,8 @@ li:hover {
 
 .content{
   width: 30%;
+  min-height: 450px;
 }
-
 
 .content p {
     display: inline-block;
@@ -78,7 +78,7 @@ li:hover {
   font-size: 14px;
 }
 
-.content #button {
+.button {
   border: #2F4F4F 0.2px solid;
   border-radius: 5px;
   margin: 5px;
@@ -87,7 +87,7 @@ li:hover {
   color: #FFF;
 }
 
-.content #button:hover {
+.button:hover {
   border: #CC0000 0.2px solid;
   background-color: #CC0000;
   color: #FFFF00;
@@ -114,8 +114,19 @@ select {
   background-color: #FFF;
 }
 
+input {
+  color: #A9A9A9;
+}
+
+input:focus {
+  color: #2F4F4F;
+}
+
 .footer {
-  padding-top: 10%;
+  width: 100%;
+  position: absolute;
+  bottom: : 5%;
+  min-height: 100px;
   color: #2F4F4F;
 }
 

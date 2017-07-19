@@ -11,16 +11,17 @@
         <h1>Pig Weather</h1>
         <h2>Let you know where rain and when rain</h2>
       </div>
-      <div class='content' style="margin-bottom:100px">
+      <div class='content'>
         <div class="box">
           <h3>會員登入</h3>
-          <form action="http://localhost:3000/login" method ="post" >
+          <form action="/login" method ="post" >
 
             <p>帳號&nbsp;<input type="text" name="user_email"></p>
             <p>密碼&nbsp;<input type="password" name="password"></p><br>
 
-            <input id='button' type="submit" value="登入">
-            <input id='button' type="button" value="忘記密碼">
+            <input class='button' type="submit" value="登入">
+            <input class='button' type="button" value="忘記密碼">
+            <a href='/register'><input class='button' type="button" value="註冊"></a>
 
           </form>
         </div>
