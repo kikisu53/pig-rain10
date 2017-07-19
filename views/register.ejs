@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title>Pig Weather clock</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+      var err = '<%= err %>';
+      if(err!=='') alert(err);
+    </script>
   </head>
   <body>
     <div class='container' align='center'>
@@ -16,7 +20,7 @@
           <h3>會員註冊</h3>
           <form action="/register" method ="post" >
 
-            <p>帳號&nbsp;<input type="text" name="user_email"></p>
+            <p>帳號&nbsp;<input type="text" name="user"></p>
             <p>密碼&nbsp;<input type="password" name="password"></p><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input id='button' type="submit" value="註冊">

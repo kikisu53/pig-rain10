@@ -1,8 +1,8 @@
 ## Datas
 |table name| items(type) | source |
 |----------|-------------|--------|
-| pig-user | user-email(S,HASH), password(S) | dynamodb(./lib/connect.js)|
-|pig-notification| user-email(S), area-id(S,HASH), timespan-id(N,RANGE), threshold(N)|dynamodb(./lib/connect.js)
+| pig-user | user(S,HASH), password(S) | dynamodb(./lib/connect.js)|
+|pig-notification| user(S), area-id(S,HASH), timespan-id(N,RANGE), threshold(N)|dynamodb(./lib/connect.js)
 | pigArea | see note 1., 2. | pig-area.js (./lib/create-area.js) |
 | pigTimespan | [] |pig-timespan |
 | pigCity | see note 1., 3.| area-county.js (./lib/create-area.js) |
