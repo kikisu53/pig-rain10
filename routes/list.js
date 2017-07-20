@@ -6,11 +6,15 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+<<<<<<< HEAD
   res.render('list');
+=======
+>>>>>>> 6e0972f2b0cda0309afdd08df8342c29ce1dcc57
   //userEmail
   //res.send('respond with a resource');
+  res.render('list');
 });
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
   //res.send('respond with a resource');
 });
 router.post('/', function(req, res, next) {

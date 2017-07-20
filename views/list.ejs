@@ -2,13 +2,22 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width"/>
     <title>Pig Weather clock</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/form.js"></script>
+    <script src="/data/pig-city.js"></script>
+    <script src="/data/pig-county.js"></script>
+    <script src="/data/pig-stop.js"></script>
+    <script src="/data/pig-timespan.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
   </head>
   <body>
-    <ul align='right' style="padding-right:20%">
-      Welcome Tingru!
-      <li>logout</li>
+
+    <ul align='left'>
+      Welcome Tingru <span>▼</span>
+      <li>service</li>
+      <a href='/logout'><li>logout</li></a>
+
     </ul>
     <hr>
     <div class='container' align='center'>
@@ -18,49 +27,92 @@
       </div>
       <div class='content' align='left'>
         <div class='topbar'>
-          <p>Area</p>
-          <p>Rain</p>
-          <p>TimeSpan</p>
+          <p>地區</p>
+          <p>時間間隔</p>
+          <p>雨量（公釐）</p>
         </div>
         <div class='box'>
           <p>新北市新店</p>
           <p>10公釐</p>
           <p>10分鐘</p>
-          <p id='button'>Delete</p>
+          <p class='button'>刪除通知</p>
         </div>
         <div class='box'>
           <p>台中市西屯</p>
           <p>15公釐</p>
           <p>1小時</p>
-          <p id='button'>Delete</p>
+          <p class='button'>刪除通知</p>
         </div>
         <p></p>
         <div class='createbox' align='left'>
           <h3 align='center'>新增下雨通知</h3>
-          <form action="localhost:3000/list" method="post">
+          <form action="/list" onsubmit="return list();" method="post">
+            <span id='notice_list'></span><br>
             <p><span>*</span>地區</p>
-            <select name="city">
+            <select name="city" id='city'>
 　            <option>請選擇縣市</option>
-              <% city.forEach(function(city) { %>
-              <option value="<%= city[0] %>"><%= city[1] %></option>
-　            <% }); %>
             </select>
-            <select name="county">
+            <select name="county" id='county'>
 　            <option>請選擇鄉鎮區</option>
-              <% city.forEach(function(city) { %>
-              <option value="<%= city[0] %>"><%= city[1] %></option>
-　            <% }); %>
             </select>
-            <select name="stop">
+            <select name="stop" id='stop'>
 　            <option>請選擇觀測站</option>
-              <% city.forEach(function(city) { %>
-              <option value="<%= city[0] %>"><%= city[1] %></option>
-　            <% }); %>
             </select><br>
-            <p><span>*</span>雨量
-              <input type="text" name="threshold">
-            公釐</p>
+            <p><span>*</span>間隔</p>
+            <select name="timespan" id='timespan'>
+　            <option>請選擇間隔</option>
+            </select><br>
+            <script>
+              const city = document.querySelector('#city');
+              for (let area in pigCity) {
+                let option = document.createElement('option');
+                option.text = pigCity[area];
+                option.setAttribute('value', area);
+                city.add(option);
+              }
 
+              city.addEventListener('change', function () {
+                while (county.firstChild) {
+                  county.removeChild(county.firstChild);
+                }
+                const citySelected = city.value;
+                const countyFiltered = pigCounty[citySelected];
+                for (let area in countyFiltered) {
+                  let option = document.createElement('option');
+                  option.text = countyFiltered[area];
+                  option.setAttribute('value', area);
+                  county.add(option);
+                }
+              });
+
+              const county = document.querySelector('#county');
+              const stop = document.querySelector('#stop');
+
+              county.addEventListener('change', function () {
+                while (stop.firstChild) {
+                  stop.removeChild(stop.firstChild);
+                }
+                const stopFiltered = pigStop[county.value];
+                for (let area in stopFiltered) {
+                  let option = document.createElement('option');
+                  option.text = stopFiltered[area].addr;
+                  option.setAttribute('value', area);
+                  stop.add(option)
+                }
+              });
+
+              const timespan = document.querySelector('#timespan');
+              for (let time in pigTimespan) {
+                let option = document.createElement('option');
+                option.text = pigTimespan[time];
+                option.setAttribute('value', time);
+                timespan.add(option);
+              }
+            </script>
+            <p><span>*</span>雨量</p>
+            <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+            <span id='notice_rain'></span>
+            <input class='button' type="submit" value="新增通知">
           </form>
         </div>
       </div>
