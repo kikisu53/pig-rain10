@@ -6,6 +6,10 @@
     <title>Pig Weather clock</title>
     <script src="/javascripts/form.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+      var err = '<%= err %>';
+      if(err!=='') alert(err);
+    </script>
   </head>
   <body>
     <div class='container' align='center'>
@@ -16,6 +20,7 @@
       <div class='content'>
         <div class='box'>
           <h3>會員註冊</h3>
+<<<<<<< HEAD
           <form action="/register" onsubmit="return register();" method ="post">
             <p>帳號&nbsp;<input id='user' type="text" name="user" value='email@abc.com' onchange="checkEmail(this.id)"
               onblur="if (this.value == '') {this.value = 'email@abc.com';}"
@@ -27,6 +32,14 @@
             <p>確認密碼&nbsp;<input id='password1' type="password" name="password" onchange="againPw(this.id)"></p><br>
             <span id='notice_pw'></span><br>
             <input class='button' type="submit" value="註冊">
+=======
+          <form action="/register" method ="post" >
+
+            <p>帳號&nbsp;<input type="text" name="user"></p>
+            <p>密碼&nbsp;<input type="password" name="password"></p><br>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input id='button' type="submit" value="註冊">
+>>>>>>> 3e5d5ead79f41721df218cae38ca12363935bd32
 
           </form>
         </div>
