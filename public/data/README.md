@@ -1,13 +1,13 @@
 ## Datas
 |table name| items(type) | source |
 |----------|-------------|--------|
-| pig-user | user-email(S,HASH), password(S) | dynamodb(./lib/connect.js)|
-|pig-notification| user-email(S), area-id(S,HASH), timespan-id(N,RANGE), threshold(N)|dynamodb(./lib/connect.js)
-| pig-area | see note 1., 2. | ./data/pig-area.json (./data/create-area.js) |
-| pig-timespan | [] |./data/pig-timespan |
-| pig-city | see note 1., 3.| ./data/area-county.json (./data/create-area.js) |
-| pig-county | see note 1., 4.| ./data/area-county.json (./data/create-area.js) |
-| pig-stop | see note 1., 5.| ./data/area-county.json (./data/create-area.js) |
+| pig-user | user(S,HASH), password(S) | dynamodb(./lib/connect.js)|
+|pig-notification| user(S), area-id(S,HASH), timespan-id(N,RANGE), threshold(N)|dynamodb(./lib/connect.js)
+| pigArea | see note 1., 2. | pig-area.js (./lib/create-area.js) |
+| pigTimespan | [] |pig-timespan |
+| pigCity | see note 1., 3.| area-county.js (./lib/create-area.js) |
+| pigCounty | see note 1., 4.| area-county.js (./lib/create-area.js) |
+| pigStop | see note 1., 5.| area-county.js (./lib/create-area.js) |
 
 0. about id
 	* city-id: AreaN, N=1,2,3,...
