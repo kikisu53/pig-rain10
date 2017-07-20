@@ -3,10 +3,16 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+ul {
+  width: 10%;
+  margin-left: 75%;
+}
+
 li {
-  display: block;
+  display: inline-block;
   border: #2F4F4F 0.1px solid;
-  width: 50px;
+  width: 55px;
+  text-align: center;
   float: right;
   padding: 5px;
   margin: 0 5px 0 5px;
@@ -16,6 +22,10 @@ ul li {
   display: none;
 }
 
+ul:hover {
+  cursor: pointer;
+}
+
 ul:hover li{
   display: inline-block;
 }
@@ -23,6 +33,7 @@ ul:hover li{
 li:hover {
   background-color: #2F4F4F;
   color: #FFF;
+  display: inline-block;
 }
 
 .container {
@@ -67,7 +78,7 @@ li:hover {
   border-radius: 10px;
   background-color: #FFFACD;
   margin: 5px 0px 5px 0px;
-  padding: 5px;
+  padding: 0px 5px 0px 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
 }
@@ -85,6 +96,13 @@ li:hover {
   padding: 5px;
   background-color: #2F4F4F;
   color: #FFF;
+  cursor: pointer;
+}
+
+.button:focus {
+  border: #CC0000 0.2px solid;
+  background-color: #CC0000;
+  color: #FFFF00;
 }
 
 .button:hover {
@@ -135,6 +153,8 @@ input:focus {
   margin: 10px;
 }
 
-a {
-  color: #00B7FF;
+@media screen and (max-width: 768px){
+  .content{
+    width: 90%;
+  }
 }

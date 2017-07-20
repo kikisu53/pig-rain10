@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width"/>
     <title>Pig Weather clock</title>
     <script src="/javascripts/form.js"></script>
     <script src="/data/pig-city.js"></script>
@@ -11,11 +12,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css'/>
   </head>
   <body>
-    <ul align='right' style="padding-right:10%;">
-      <span>Welcome Tingru ▼</span>
+    <ul align='left'>
+      Welcome Tingru <span>▼</span>
       <li>service</li>
+      <li>logout</li>
     </ul>
-    <li>logout</li>
     <hr>
     <div class='container' align='center'>
       <div class='header'>
@@ -43,7 +44,8 @@
         <p></p>
         <div class='createbox' align='left'>
           <h3 align='center'>新增下雨通知</h3>
-          <form action="/list" method="post">
+          <form action="/list" onsubmit="return list();" method="post">
+            <span id='notice_list'></span><br>
             <p><span>*</span>地區</p>
             <select name="city" id='city'>
 　            <option>請選擇縣市</option>
@@ -107,7 +109,7 @@
             </script>
             <p><span>*</span>雨量</p>
             <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
-            <span id='notice' style="display:none">雨量設定不可小於0</span>
+            <span id='notice_rain'></span>
             <input class='button' type="submit" value="新增通知">
           </form>
         </div>
