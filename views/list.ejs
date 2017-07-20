@@ -43,6 +43,16 @@
           <p>1小時</p>
           <p class='button'>刪除通知</p>
         </div>
+        <hr>
+        <% items.forEach(function(item) { %>
+        <div class="box">
+          <p><%= item[0] %></p>
+          <p><%= item[1] %></p>
+          <p><%= item[2] %></p>
+          <p class='button'>刪除通知</p>
+        </div>
+        <% }) %>
+        <hr>
         <p></p>
         <div class='createbox' align='left'>
           <h3 align='center'>新增下雨通知</h3>
