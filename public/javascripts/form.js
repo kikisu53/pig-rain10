@@ -53,6 +53,7 @@ var checkThreshold = (threshold) => {
   var str = '';
   (parseInt(threshold) < 0 || isNaN(threshold))? str='雨量設定不可小於0' : str;
   document.getElementById('notice_rain').innerHTML=str;
+  console.log(document.getElementById('city').value+'-'+document.getElementById('county').value+'-'+document.getElementById('timespan').value)
 }
 
 var list = () => {
