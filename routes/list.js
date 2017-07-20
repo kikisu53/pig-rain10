@@ -1,30 +1,45 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');
+var AWS = require('aws-sdk');
+AWS.config.update({region: 'us-west-2'});
+var docClient = new AWS.DynamoDB.DocumentClient();
 
-/*load jsonfile to form*/
-router.use(function(req, res, next){
-  res.locals.city = JSON.parse(fs.readFileSync('data/pig-city.json'));
-  res.locals.county = JSON.parse(fs.readFileSync('data/pig-county.json'));
-  next();
-});
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  var city = Object.keys(res.locals.city).map(function(e) {
-    return [e.toString(), res.locals.city[e]];
-  });
-  var county = res.locals.county;
-  console.log(res.locals.county);
-  
-  res.render('list', {
-    city,
-    county
-  });
+  res.render('list');
   //userEmail
   //res.send('respond with a resource');
 });
 router.get('/', function(req, res, next) {
   //res.send('respond with a resource');
 });
+router.post('/', function(req, res, next) {
+  var table = 'pig-notification';
+
+  var name = req.body.name;
+  var area = req.body.area;
+  var timespan = req.body.timespan;
+  var threshold = req.body.threshold;
+
+  var params = {
+    TableName: table,
+    Item: {
+      name,
+      "area-id": area,
+      "timespan-id": timespan,
+      threshold
+    }
+  };
+  console.log('Adding a new item...')
+  docClient.put(params, function(err, data) {
+    if (err) {
+      console.error('Unable to add item. Error JSON: ', JSON.stringify(err, null, 2));
+      return;
+    }
+    console.log("Added item: ", JSON.stringify(data, null, 2));
+  })
+  res.json(req.body);
+})
+
 
 module.exports = router;
