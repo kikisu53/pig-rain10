@@ -3,13 +3,27 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+ul {
+  width: 10%;
+  margin-left: 75%;
+}
+
 li {
-  display: none;
+  display: inline-block;
   border: #2F4F4F 0.1px solid;
-  width: 50px;
+  width: 55px;
+  text-align: center;
   float: right;
   padding: 5px;
   margin: 0 5px 0 5px;
+}
+
+ul li {
+  display: none;
+}
+
+ul:hover {
+  cursor: pointer;
 }
 
 ul:hover li{
@@ -19,9 +33,13 @@ ul:hover li{
 li:hover {
   background-color: #2F4F4F;
   color: #FFF;
+  display: inline-block;
 }
 
 .container {
+  background-image: url("http://pngimages.net/sites/default/files/rain-png-image-24401.png");
+  background-repeat: repeat-x;
+  background-position: -30px 100px;
   width: 100%;
 }
 
@@ -30,9 +48,9 @@ li:hover {
 }
 
 .content{
-  width: 100%;
+  width: 30%;
+  min-height: 450px;
 }
-
 
 .content p {
     display: inline-block;
@@ -40,29 +58,27 @@ li:hover {
 }
 
 .topbar {
-  width: 25%;
+  width: 100%;
   height: 30px;
   position: relative;
   border-radius: 10px;
   background-color: #2F4F4F;
-  margin: 10px 37.5% 10px 37.5%;
   padding: 5px;
   box-shadow: 0.2px 0.2px 2px #FFFACD;
   color: #FFFACD;
-
 }
 
 .topbar p {
-  margin: 5px 25px 5px 25px;
+  margin: 5px 20px 5px 20px;
 }
 
 .box {
-  width: 25%;
+  width: 100%;
   position: relative;
   border-radius: 10px;
   background-color: #FFFACD;
-  margin: 10px 37.5% 10px 37.5%;
-  padding: 5px;
+  margin: 5px 0px 5px 0px;
+  padding: 0px 5px 0px 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
 }
@@ -70,29 +86,36 @@ li:hover {
 .content input {
   border: #2F4F4F 0.2px solid;
   border-radius: 5px;
+  font-size: 14px;
 }
 
-.content #button {
+.button {
   border: #2F4F4F 0.2px solid;
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
   background-color: #2F4F4F;
   color: #FFF;
+  cursor: pointer;
 }
 
-.content #button:hover {
+.button:focus {
+  border: #CC0000 0.2px solid;
+  background-color: #CC0000;
+  color: #FFFF00;
+}
+
+.button:hover {
   border: #CC0000 0.2px solid;
   background-color: #CC0000;
   color: #FFFF00;
 }
 
 .createbox {
-  width: 25%;
+  width: 100%;
   position: relative;
   border-radius: 10px;
   background-color: #FFF;
-  margin: 10px 37.5% 10px 37.5%;
   padding: 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
@@ -102,8 +125,26 @@ form span {
   color: #CC0000;
 }
 
+select {
+  color: #2F4F4F;
+  border: #2F4F4F 0.1px solid;
+  height: 25px;
+  background-color: #FFF;
+}
+
+input {
+  color: #A9A9A9;
+}
+
+input:focus {
+  color: #2F4F4F;
+}
+
 .footer {
-  padding-top: 20%;
+  width: 100%;
+  position: absolute;
+  bottom: : 5%;
+  min-height: 100px;
   color: #2F4F4F;
 }
 
@@ -112,6 +153,8 @@ form span {
   margin: 10px;
 }
 
-a {
-  color: #00B7FF;
+@media screen and (max-width: 768px){
+  .content{
+    width: 90%;
+  }
 }
