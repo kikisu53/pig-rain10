@@ -13,6 +13,12 @@ var list = require('./routes/list');
 var connect = require('./lib/connect')
 var app = express();
 
+function loginCheck(req, res, next) {
+  if (!req.session.logined || !req.session.user) {
+    res.redirect('/');
+  }
+  next();
+}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,10 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/list', function(req, res, next) {
-  //if (!logined) res.redirect('/');
-  next();
-})
+app.use('/list', loginCheck);
 app.use('/list', list);
 
 // catch 404 and forward to error handler
