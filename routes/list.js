@@ -47,7 +47,10 @@ router.get('/', function (req, res, next) {
     });
     res.render('list', {
       items,
-      messages: req.flash('info')
+      messages: {
+        info: req.flash('info'),
+        areaId: req.flash('areaId')
+      }
     });
   }
 });
@@ -75,6 +78,7 @@ router.post('/', function (req, res, next) {
     if (err) {
       console.error('Unable to add item. Error JSON: ', JSON.stringify(err, null, 2));
       req.flash('info', 'Repeated station notification! Delete notification at the station first.');
+      req.flash('areaId', areaId);
       res.redirect('/list');
       return;
     }

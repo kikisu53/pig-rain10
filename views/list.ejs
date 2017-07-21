@@ -48,15 +48,9 @@
         <p class='button'>刪除通知</p>
       </div>
       <hr>
-      <% if (messages.length > 0) { %>
-      <div class="flash">
-        <p>
-          <%= messages %>
-        </p>
-      </div>
-      <% } %>
+      
       <% items.forEach(function(item) { %>
-        <div class="box">
+        <div class="box <%= item.addr.id %>">
           <p class="area">
             <%= item.addr.value %>
           </p>
@@ -100,7 +94,13 @@
                 });
                 county.addEventListener('change', renderStations);
                 renderTimespan();
-
+                <% if (messages.areaId.length > 0) { %>
+                  const repeatNotification = document.querySelector('.<%= messages.areaId %>');
+                  repeatNotification.classList.add('flash');
+                  const flash = document.createElement('p')
+                  flash.textContent = '<%= messages.info %>';
+                  repeatNotification.appendChild(flash);
+                <% } %>
                 function renderCity() {
                   for (let area in pigCity) {
                     let option = document.createElement('option');
