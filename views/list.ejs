@@ -91,14 +91,26 @@
             </select><br>
               <script>
                 const city = document.querySelector('#city');
-                for (let area in pigCity) {
-                  let option = document.createElement('option');
-                  option.text = pigCity[area];
-                  option.setAttribute('value', area);
-                  city.add(option);
+                renderCity();
+                const county = document.querySelector('#county');
+                const stop = document.querySelector('#stop');
+                city.addEventListener('change', () => {
+                  renderCounty();
+                  renderStations();
+                });
+                county.addEventListener('change', renderStations);
+                renderTimespan();
+
+                function renderCity() {
+                  for (let area in pigCity) {
+                    let option = document.createElement('option');
+                    option.text = pigCity[area];
+                    option.setAttribute('value', area);
+                    city.add(option);
+                  }
                 }
 
-                city.addEventListener('change', function () {
+                function renderCounty() {
                   while (county.firstChild) {
                     county.removeChild(county.firstChild);
                   }
@@ -110,12 +122,9 @@
                     option.setAttribute('value', area);
                     county.add(option);
                   }
-                });
-
-                const county = document.querySelector('#county');
-                const stop = document.querySelector('#stop');
-
-                county.addEventListener('change', function () {
+                }
+                
+                function renderStations() {
                   while (stop.firstChild) {
                     stop.removeChild(stop.firstChild);
                   }
@@ -126,14 +135,16 @@
                     option.setAttribute('value', area);
                     stop.add(option)
                   }
-                });
+                }
 
-                const timespan = document.querySelector('#timespan');
-                for (let time in pigTimespan) {
-                  let option = document.createElement('option');
-                  option.text = pigTimespan[time];
-                  option.setAttribute('value', time);
-                  timespan.add(option);
+                function renderTimespan() {
+                  const timespan = document.querySelector('#timespan');
+                  for (let time in pigTimespan) {
+                    let option = document.createElement('option');
+                    option.text = pigTimespan[time];
+                    option.setAttribute('value', time);
+                    timespan.add(option);
+                  }
                 }
               </script>
               <p><span>*</span>雨量</p>
