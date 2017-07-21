@@ -4,12 +4,13 @@ var AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-west-2' });
 var docClient = new AWS.DynamoDB.DocumentClient();
 var pigArea = require('../public/data/pig-area');
-var pigTimespan = require('..//public/data/pig-timespan')
+var pigTimespan = require('..//public/data/pig-timespan');
+var testEmail = 'example@test.case';
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   var TableName = 'pig-notification';
-  var user = req.session.user || 'example@test.case';
+  var user = req.session.user || testEmail;
   var params = {
     TableName: TableName,
     FilterExpression: '#user = :user',
@@ -29,10 +30,13 @@ router.get('/', function (req, res, next) {
       // print all the movies
       console.log("Scan succeeded.");
       var items = data.Items.map(item => {
-        var addr = pigArea[item['area-id']].addr;
+        var addr = {
+          id: item['area-id'],
+          value: pigArea[item['area-id']].addr
+        };
         var threshold = item.threshold + '公釐';
         var timespan = pigTimespan[item.timespan];
-        return [addr, threshold, timespan];
+        return { addr, threshold, timespan };
       })
       res.render('list', {
         user: user,
@@ -43,7 +47,7 @@ router.get('/', function (req, res, next) {
 });
 router.post('/', function (req, res, next) {
   var areaId = req.body.stop;
-  var user = req.session.user || 'example@test.case';
+  var user = req.session.user || testEmail;
   var timespan = req.body.timespan;
   var threshold = req.body.threshold;
   var TableName = 'pig-notification';
@@ -66,6 +70,28 @@ router.post('/', function (req, res, next) {
   })
   res.redirect('/list');
 });
+router.get('/delete/:area_id', function (req, res, next) {
+  var areaId = req.params.area_id;
+  var user = req.session.user || testEmail;
+  var TableName = 'pig-notification';
+  var params = {
+    TableName,
+    Key: {
+      'area-id': areaId,
+      user
+    }
+  }
+
+  console.log("Attempting a conditional delete...");
+  docClient.delete(params, function (err, data) {
+    if (err) {
+      console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+      res.redirect('/list');
+    }
+  });
+})
 
 
 module.exports = router;
