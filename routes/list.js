@@ -35,6 +35,7 @@ router.get('/', function (req, res, next) {
         return [addr, threshold, timespan];
       })
       res.render('list', {
+        user: user,
         items: items
       });
     }

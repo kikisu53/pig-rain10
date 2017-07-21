@@ -14,7 +14,7 @@
   <body>
 
     <ul align='left'>
-      Welcome Tingru <span>▼</span>
+      Welcome <span><%= user %></span> <span>▼</span>
       <li>service</li>
       <a href='/logout'><li>logout</li></a>
 
@@ -31,19 +31,6 @@
           <p>時間間隔</p>
           <p>雨量（公釐）</p>
         </div>
-        <div class='box'>
-          <p>新北市新店</p>
-          <p>10公釐</p>
-          <p>10分鐘</p>
-          <p class='button'>刪除通知</p>
-        </div>
-        <div class='box'>
-          <p>台中市西屯</p>
-          <p>15公釐</p>
-          <p>1小時</p>
-          <p class='button'>刪除通知</p>
-        </div>
-        <hr>
         <% items.forEach(function(item) { %>
         <div class="box">
           <p><%= item[0] %></p>
@@ -52,12 +39,11 @@
           <p class='button'>刪除通知</p>
         </div>
         <% }) %>
-        <hr>
         <p></p>
         <div class='createbox' align='left'>
           <h3 align='center'>新增下雨通知</h3>
           <form action="/list" onsubmit="return list();" method="post">
-            <span id='notice_list'></span><br>
+            <p><span id='notice_list'></span></p><br>
             <p><span>*</span>地區</p>
             <select name="city" id='city'>
 　            <option>請選擇縣市</option>
@@ -119,6 +105,7 @@
                 timespan.add(option);
               }
             </script>
+            <p>雨量設定須為整數或至小數點後第一位</p><br>
             <p><span>*</span>雨量</p>
             <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
             <span id='notice_rain'></span>

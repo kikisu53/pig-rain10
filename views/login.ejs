@@ -21,13 +21,13 @@
         <div class="box">
           <h3>會員登入</h3>
           <form action="/login" onsubmit="return login();" method ="post" >
-            <span id='notice_login'></span><br>
+            <p><span id='notice_login'></span></p><br>
             <p>帳號&nbsp;<input id='user' type="text" name="user"></p>
             <p>密碼&nbsp;<input id='password' type="password" name="password"></p><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input class='button' type="submit" value="登入">
             <input class='button' type="button" onclick="javascript:location.href='/forget'" value="忘記密碼">
-            <a href='/register'><input class='button' type="button" onclick="javascript:location.href='/register'" value="註冊"></a>
+            <input class='button' type="button" onclick="javascript:location.href='/register'" value="註冊">
 
           </form>
         </div>

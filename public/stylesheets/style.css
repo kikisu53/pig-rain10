@@ -78,7 +78,7 @@ li:hover {
   border-radius: 10px;
   background-color: #FFFACD;
   margin: 5px 0px 5px 0px;
-  padding: 0px 5px 0px 5px;
+  padding: 5px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
 }
@@ -143,6 +143,7 @@ input:focus {
 .footer {
   width: 100%;
   position: absolute;
+  padding-top: 50px;
   bottom: : 5%;
   min-height: 100px;
   color: #2F4F4F;
