@@ -48,6 +48,13 @@
         <p class='button'>刪除通知</p>
       </div>
       <hr>
+      <% if (messages.length > 0) { %>
+      <div class="flash">
+        <p>
+          <%= messages %>
+        </p>
+      </div>
+      <% } %>
       <% items.forEach(function(item) { %>
         <div class="box">
           <p class="area">
