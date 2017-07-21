@@ -6,16 +6,24 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session')
 var csurf = require('csurf')
+var flash = require('connect-flash');
 
 var index = require('./routes/index');
 var list = require('./routes/list');
 var connect = require('./lib/connect')
 var app = express();
 
+function loginCheck(req, res, next) {
+  if (!req.session.logined || !req.session.user) {
+    res.redirect('/');
+  }
+  next();
+}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(flash());
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -25,10 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/list', function(req, res, next) {
-  //if (!logined) res.redirect('/');
-  next();
-})
+app.use('/list', loginCheck);
 app.use('/list', list);
 
 // catch 404 and forward to error handler

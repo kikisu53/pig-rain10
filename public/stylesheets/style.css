@@ -163,3 +163,7 @@ a {
     width: 90%;
   }
 }
+
+.flash {
+  background-color: pink;
+}
