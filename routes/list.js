@@ -49,7 +49,8 @@ router.get('/', function (req, res, next) {
       items,
       messages: {
         info: req.flash('info'),
-        areaId: req.flash('areaId')
+        areaId: req.flash('areaId'),
+        formInfo: req.flash('formInfo')
       }
     });
   }
@@ -58,7 +59,13 @@ router.post('/', function (req, res, next) {
   var areaId = req.body.stop;
   var user = req.session.user || testEmail;
   var timespan = req.body.timespan;
-  var threshold = req.body.threshold;
+  
+  var threshold = Number(req.body.threshold);
+  if (!isFinite(threshold)) {
+    req.flash('formInfo', 'threshold should be a valid positive number');
+    res.redirect('/list');
+    return;
+  }
   var params = {
     TableName,
     ConditionExpression: 'attribute_not_exists(#area) or attribute_not_exists(#user)',

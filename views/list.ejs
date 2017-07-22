@@ -30,6 +30,11 @@
       <h2>Let you know where rain and when rain</h2>
     </div>
     <div class='content' align='left'>
+      <% if (messages.formInfo.length > 0) { %>
+      <div class="box flash">
+        <p><%= messages.formInfo %></p>
+      </div>
+      <% } %>
       <div class='topbar'>
         <p>地區</p>
         <p>時間間隔</p>
