@@ -26,6 +26,11 @@
       <h2>Let you know where rain and when rain</h2>
     </div>
     <div class='content' align='left'>
+      <% if (messages.formInfo.length > 0) { %>
+      <div class="box flash">
+        <p><%= messages.formInfo %></p>
+      </div>
+      <% } %>
       <div class='topbar'>
         <p>地區</p>
         <p>時間間隔</p>
@@ -40,7 +45,7 @@
       </div>
       <% } %>
       <% items.forEach(function(item) { %>
-        <div class="box">
+        <div class="box <%= item.addr.id %>">
           <p class="area">
             <%= item.addr.value %>
           </p>
@@ -84,7 +89,13 @@
                 });
                 county.addEventListener('change', renderStations);
                 renderTimespan();
-
+                <% if (messages.areaId.length > 0) { %>
+                  const repeatNotification = document.querySelector('.<%= messages.areaId %>');
+                  repeatNotification.classList.add('flash');
+                  const flash = document.createElement('p')
+                  flash.textContent = '<%= messages.info %>';
+                  repeatNotification.appendChild(flash);
+                <% } %>
                 function renderCity() {
                   for (let area in pigCity) {
                     let option = document.createElement('option');
@@ -139,12 +150,12 @@
           </form>
         </div>
       </div>
-      <div class='footer'>
-        <hr>
-        <h5>Contact us</h5>
-        <h5>|</h5>
-        <h5>About us</h5>
-      </div>
+    <div class='footer'>
+      <hr>
+      <h5>Contact us</h5>
+      <h5>|</h5>
+      <h5>About us</h5>
+    </div>
   </div>
   </body >
 </html >

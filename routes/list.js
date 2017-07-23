@@ -35,7 +35,7 @@ router.get('/', function (req, res, next) {
     var items = data.Items.map(item => {
       var addr = {
         id: item['area-id'],
-        value: pigArea[item['area-id']].addr
+        value: pigArea[item['area-id']].city + pigArea[item['area-id']].addr
       };
       var threshold = item.threshold + '公釐';
       var timespan = pigTimespan[item.timespan];
@@ -48,7 +48,11 @@ router.get('/', function (req, res, next) {
     res.render('list', {
       user,
       items,
-      messages: req.flash('info')
+      messages: {
+        info: req.flash('info'),
+        areaId: req.flash('areaId'),
+        formInfo: req.flash('formInfo')
+      }
     });
   }
 });
@@ -56,7 +60,13 @@ router.post('/', function (req, res, next) {
   var areaId = req.body.stop;
   var user = req.session.user || testEmail;
   var timespan = req.body.timespan;
-  var threshold = req.body.threshold;
+  
+  var threshold = Number(req.body.threshold);
+  if (!isFinite(threshold)) {
+    req.flash('formInfo', 'threshold should be a valid positive number');
+    res.redirect('/list');
+    return;
+  }
   var params = {
     TableName,
     ConditionExpression: 'attribute_not_exists(#area) or attribute_not_exists(#user)',
@@ -76,6 +86,7 @@ router.post('/', function (req, res, next) {
     if (err) {
       console.error('Unable to add item. Error JSON: ', JSON.stringify(err, null, 2));
       req.flash('info', 'Repeated station notification! Delete notification at the station first.');
+      req.flash('areaId', areaId);
       res.redirect('/list');
       return;
     }
