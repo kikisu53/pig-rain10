@@ -10,6 +10,7 @@ const nodemailer = require('nodemailer');
 const mailset = require('./mailset-sample');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
+const rain = require('../lib/create-data');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
