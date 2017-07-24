@@ -7,9 +7,10 @@ const nodemailer = require('nodemailer');
 
 //避免信箱密碼公開，請自行修改mailset-sample.js，並改檔名為mail
 //mail.js 已設定成 gitignore
-const mailset = require('./mailset');
-const transporter = nodemailer.createTransport(mailset); 
+const mailset = require('./mailset-sample');
+const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
+const rain = require('../lib/create-data');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
@@ -69,13 +70,13 @@ router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
             res.render('login', {err:'Error', csrfToken: req.csrfToken()});
           break;
         }
-      }, 
+      },
       err => res.send('Error')
   )
 })
 
 router.post('/user/register', parseForm, csrfProtection, function(req, res, next) {
-  var user = req.body.user, password = req.body.password, pw1 = req.body.password1;
+  var user = req.body.user, password = req.body.password, pw1 = req.body.password01;
   if( password!==pw1  || check(user,'email') || check(password,'pw') ) {
     return res.render('register',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
   }
@@ -102,7 +103,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
         text: 'Your new password is ' + pw +'. \r\n'
             + 'Please use the new password login, and change you password as soon as possible.'
       };
-      transporter.sendMail(mailOptions, (err, info) => 
+      transporter.sendMail(mailOptions, (err, info) =>
         err
         ? res.render('forget',{err:'Error', csrfToken: req.csrfToken()})
         : res.render('login', {err:'新密碼發送到帳號信箱，請使用新密碼登入，並盡快修改密碼。', csrfToken: req.csrfToken()})
@@ -123,5 +124,4 @@ router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next
       
   })
 })
-
 module.exports = router;
