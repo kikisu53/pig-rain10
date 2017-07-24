@@ -105,7 +105,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
       };
       transporter.sendMail(mailOptions, (err, info) =>
         err
-        ? res.render('forget',{err:'Error', csrfToken: req.csrfToken()})
+        ? res.render('forgetpw',{err:'Error', csrfToken: req.csrfToken()})
         : res.render('login', {err:'新密碼發送到帳號信箱，請使用新密碼登入，並盡快修改密碼。', csrfToken: req.csrfToken()})
       );
     },
@@ -120,8 +120,8 @@ router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next
   }
   db.changepw( {user:user, password:password, oldpw:oldpw} )
   .then(result => {
-      if(result===0) return res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
-      
+      if(result===2) return res.redirect('/');
+      res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
   })
 })
 module.exports = router;
