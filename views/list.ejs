@@ -14,14 +14,10 @@
 </head>
 
 <body>
-
   <ul align='left'>
-    Welcome Tingru <span>▼</span>
+    Welcome <span><%= user %></span> <span>▼</span>
     <li>service</li>
-    <a href='/logout'>
-      <li>logout</li>
-    </a>
-
+    <a href='/logout'><li>logout</li></a>
   </ul>
   <hr>
   <div class='container' align='center'>
@@ -40,7 +36,14 @@
         <p>時間間隔</p>
         <p>雨量（公釐）</p>
       </div>
-      <hr>
+
+      <% if (messages.length > 0) { %>
+      <div class="flash">
+        <p>
+          <%= messages %>
+        </p>
+      </div>
+      <% } %>
       <% items.forEach(function(item) { %>
         <div class="box <%= item.addr.id %>">
           <p class="area">
@@ -55,14 +58,13 @@
           <a href="/list/delete/<%= item.addr.id %>"><p class='button button-delete'>刪除通知</p></a>
         </div>
         <% }) %>
-          <hr>
-          <p></p>
-          <div class='createbox' align='left'>
-            <h3 align='center'>新增下雨通知</h3>
-            <form action="/list" onsubmit="return list();" method="post">
-              <span id='notice_list'></span><br>
-              <p><span>*</span>地區</p>
-              <select name="city" id='city'>
+        <p></p>
+        <div class='createbox' align='left'>
+          <h3 align='center'>新增下雨通知</h3>
+          <form action="/list" onsubmit="return list();" method="post">
+            <p><span id='notice_list'></span></p><br>
+            <p><span>*</span>地區</p>
+            <select name="city" id='city'>
 　            <option>請選擇縣市</option>
             </select>
               <select name="county" id='county'>
@@ -75,6 +77,7 @@
               <select name="timespan" id='timespan'>
 　            <option>請選擇間隔</option>
             </select><br>
+
               <script>
                 const city = document.querySelector('#city');
                 renderCity();
@@ -115,7 +118,6 @@
                     county.add(option);
                   }
                 }
-                
                 function renderStations() {
                   while (stop.firstChild) {
                     stop.removeChild(stop.firstChild);
@@ -138,20 +140,22 @@
                     timespan.add(option);
                   }
                 }
-              </script>
-              <p><span>*</span>雨量</p>
-              <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
-              <span id='notice_rain'></span>
-              <input class='button' type="submit" value="新增通知">
-            </form>
-          </div>
-    </div>
-    <!--<div class='footer'>
+            </script>
+
+            <p>雨量設定須為整數或至小數點後第一位</p><br>
+            <p><span>*</span>雨量</p>
+            <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+            <span id='notice_rain'></span>
+            <input class='button' type="submit" value="新增通知">
+          </form>
+        </div>
+      </div>
+    <div class='footer'>
       <hr>
       <h5>Contact us</h5>
       <h5>|</h5>
       <h5>About us</h5>
-    </div>-->
+    </div>
   </div>
   </body >
 </html >

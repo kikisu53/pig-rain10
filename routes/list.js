@@ -46,6 +46,7 @@ router.get('/', function (req, res, next) {
       };
     });
     res.render('list', {
+      user,
       items,
       messages: {
         info: req.flash('info'),

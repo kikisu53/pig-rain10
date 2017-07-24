@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 
 //避免信箱密碼公開，請自行修改mailset-sample.js，並改檔名為mail
 //mail.js 已設定成 gitignore
-const mailset = require('./mailset');
-const transporter = nodemailer.createTransport(mailset); 
+const mailset = require('./mailset-sample');
+const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 
 const router = express.Router();
@@ -55,7 +55,7 @@ router.post('/login', parseForm, csrfProtection, function(req, res, next) {
             res.render('login', {err:'Error', csrfToken: req.csrfToken()});
           break;
         }
-      }, 
+      },
       err => res.send('Error')
   )
 })
@@ -97,7 +97,7 @@ router.post('/forget', parseForm, csrfProtection, function(req, res, next) {
         text: 'Your new password is ' + pw +'. \r\n'
             + 'Please use the new password login, and change you password as soon as possible.'
       };
-      transporter.sendMail(mailOptions, (err, info) => 
+      transporter.sendMail(mailOptions, (err, info) =>
         err
         ? res.render('forget',{err:'Error', csrfToken: req.csrfToken()})
         : res.render('login', {err:'新密碼發送到帳號信箱，請使用新密碼登入，並盡快修改密碼。', csrfToken: req.csrfToken()})
