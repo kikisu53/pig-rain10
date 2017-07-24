@@ -23,6 +23,7 @@ ul li {
 }
 
 ul:hover {
+  background-color: #FFFACD;
   cursor: pointer;
 }
 
@@ -142,9 +143,9 @@ input:focus {
 
 .footer {
   width: 100%;
-  position: absolute;
+  position: relative;
   padding-top: 50px;
-  bottom:  5%;
+  top:  90%;
   min-height: 100px;
   color: #2F4F4F;
 }
