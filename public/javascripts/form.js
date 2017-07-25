@@ -9,12 +9,13 @@ var checkEmail = (email) => {
 
 var password;
 var checkPw = (pw) => {
-  var pw1 = document.getElementById('password01').value,
-      pwRule=  /^(?=.*\d)(?=.*[A-Za-z]).{6,12}$/,
-      str = '';
+  var pwRule=  /^(?=.*\d)(?=.*[A-Za-z]).{6,12}$/,
+      str = '', pw1;
+  if(document.getElementById('password01') !== null) 
+    pw1 = document.getElementById('password01').value;
   pw = document.getElementById('password').value;
   (!pw.match(pwRule))? str='密碼格式錯誤' : str;
-  (!pw.match(pw1) && pw1 !== '')? str='密碼輸入不同' : str;
+  (!pw.match(pw1) && typeof pw1 !== undefined)? str='密碼輸入不同' : str;
   document.getElementById('notice_pw').innerHTML=str;
   password = pw;
 }

@@ -5,36 +5,41 @@ body {
 
 ul {
   width: 10%;
-  margin-left: 75%;
+  position: absolute;
+  padding-left: 70%; 
 }
 
 li {
   display: inline-block;
   border: #2F4F4F 0.1px solid;
-  width: 55px;
+  width: 60px;
   text-align: center;
-  float: right;
   padding: 5px;
   margin: 0 5px 0 5px;
+  position: relative;
 }
 
 ul li {
   display: none;
+  position: relative;
+  z-index: 0;
 }
 
 ul:hover {
-  background-color: #FFFACD;
   cursor: pointer;
 }
 
 ul:hover li{
   display: inline-block;
+  position: static;
+ 
 }
 
 li:hover {
   background-color: #2F4F4F;
   color: #FFF;
   display: inline-block;
+
 }
 
 .container {
@@ -42,6 +47,8 @@ li:hover {
   background-repeat: repeat-x;
   background-position: -30px 100px;
   width: 100%;
+  position: absolute;
+  z-index: -1;
 }
 
 .header {
@@ -49,7 +56,7 @@ li:hover {
 }
 
 .content{
-  width: 30%;
+  width: 35%;
   min-height: 450px;
 }
 
@@ -64,13 +71,16 @@ li:hover {
   position: relative;
   border-radius: 10px;
   background-color: #2F4F4F;
-  padding: 5px;
+  padding: 5px 0px 5px 0px;
   box-shadow: 0.2px 0.2px 2px #FFFACD;
   color: #FFFACD;
 }
 
-.topbar p {
-  margin: 5px 20px 5px 20px;
+.topbar div {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  padding-top: 5px;
 }
 
 .box {
@@ -79,9 +89,15 @@ li:hover {
   border-radius: 10px;
   background-color: #FFFACD;
   margin: 5px 0px 5px 0px;
-  padding: 5px;
+  padding: 5px 0px 5px 0px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
+}
+
+.box div {
+  position: relative;
+  display: inline-block;
+  text-align: center;
 }
 
 .content input {
@@ -160,8 +176,19 @@ a {
 }
 
 @media screen and (max-width: 768px){
+  ul {
+    position: relative;
+    width: 100%;
+    padding-left: 0%; 
+  }
+  li{
+    width: 100%;
+  }
+  .container {
+    position: relative;
+  }
   .content{
-    width: 90%;
+    width: 95%;
   }
 }
 
