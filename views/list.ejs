@@ -15,12 +15,11 @@
 
 <body>
   <ul align='left'>
-    Welcome <span><%= user %></span> <span>▼</span>
-    <li>service</li>
+    Welcome <span><%= user %></span> <span>▼</span><br>
+    <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
   </ul>
-  <hr>
   <div class='container' align='center'>
     <div class='header'>
       <h1>Pig Weather</h1>
@@ -33,9 +32,15 @@
       </div>
       <% } %>
       <div class='topbar'>
-        <p>地區</p>
-        <p>時間間隔</p>
-        <p>雨量（公釐）</p>
+        <div style="width:35%">
+          地區
+        </div>
+        <div style="width:20%">
+          雨量
+        </div>
+        <div style="width:20%">
+          間隔
+        </div>
       </div>
 
       <% if (messages.length > 0) { %>
@@ -47,16 +52,26 @@
       <% } %>
       <% items.forEach(function(item) { %>
         <div class="box <%= item.addr.id %>">
+          <div style="width:35%;text-align: left;">
           <p class="area">
-            <%= item.addr.value %>
+            <%= item.addr.city %>
+            <br>
+            <%= item.addr.addr %>
           </p>
+          </div>
+          <div style="width:20%">
           <p class="threshold">
             <%= item.threshold %>
           </p>
+          </div>
+          <div style="width:20%">
           <p class="timespan">
             <%= item.timespan %>
           </p>
-          <a href="/list/delete/<%= item.addr.id %>"><p class='button button-delete'>刪除通知</p></a>
+          </div>
+          <div style="width:20%">
+            <a href="/list/delete/<%= item.addr.id %>"><p class='button button-delete'>刪除通知</p></a>
+          </div>
         </div>
         <% }) %>
         <p></p>
@@ -70,7 +85,8 @@
             </select>
               <select name="county" id='county'>
 　            <option>請選擇鄉鎮區</option>
-            </select>
+            </select><br>
+            <p>&emsp;&emsp;&ensp;</P>
               <select name="stop" id='stop'>
 　            <option>請選擇觀測站</option>
             </select><br>

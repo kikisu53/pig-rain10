@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 
 //避免信箱密碼公開，請自行修改mailset-sample.js，並改檔名為mail
 //mail.js 已設定成 gitignore
-const mailset = require('./mailset-sample');
+const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
@@ -37,8 +37,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/user/:ask', csrfProtection, function(req, res, next) {
+  var user = req.session.user;
   ask = req.params.ask;
-  if(ask==='changepw') return res.render(ask,{err:'', csrfToken: req.csrfToken()});
+  if(ask==='changepw') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user});
   req.session && req.session.logined
   ? res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
