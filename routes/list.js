@@ -66,11 +66,6 @@ router.post('/', function (req, res, next) {
   }
   var params = {
     TableName,
-    ConditionExpression: 'attribute_not_exists(#area) or attribute_not_exists(#user)',
-    ExpressionAttributeNames: {
-      '#area': 'area-id',
-      '#user': 'user'
-    },
     Item: {
       'area-id': areaId,
       'user': user,
