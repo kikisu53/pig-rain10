@@ -35,6 +35,8 @@ router.get('/', function (req, res, next) {
     var items = data.Items.map(item => {
       var addr = {
         id: item['area-id'],
+        city: pigArea[item['area-id']].city,
+        addr: pigArea[item['area-id']].addr,
         value: pigArea[item['area-id']].city + pigArea[item['area-id']].addr
       };
       var threshold = item.threshold + '公釐';
