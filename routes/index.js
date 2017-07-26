@@ -125,4 +125,8 @@ router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next
       res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
   })
 })
+
+router.get('/maps', function(req, res) {
+  res.render('maps');
+})
 module.exports = router;
