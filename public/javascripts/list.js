@@ -7,9 +7,16 @@ const stop = document.querySelector('#stop');
 city.addEventListener('change', () => {
   renderCounty();
   renderStations();
+  initMap();
 });
-county.addEventListener('change', renderStations);
+county.addEventListener('change', () => {
+  renderStations();
+  initMap();
+});
 renderTimespan();
+stop.addEventListener('change', () => {
+  initMap();
+});
 // <% if (messages.areaId.length > 0) { %>
 //   const repeatNotification = document.querySelector('.<%= messages.areaId %>');
 //   repeatNotification.classList.add('flash');
