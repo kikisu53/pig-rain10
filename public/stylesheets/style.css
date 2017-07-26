@@ -3,6 +3,12 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#map {
+   width: 100%;
+   height: 400px;
+   background-color: grey;
+ }
+
 ul {
   width: 10%;
   position: absolute;
@@ -17,6 +23,7 @@ li {
   padding: 5px;
   margin: 0 5px 0 5px;
   position: relative;
+  background-color: #FFF;
 }
 
 ul li {
