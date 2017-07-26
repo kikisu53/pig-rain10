@@ -92,4 +92,4 @@ var list = () => {
   return true;
 }
 
-document.querySelector('.submit').addEventListener('click', list);
+document.querySelector('.submit').addEventListener('submit', list);

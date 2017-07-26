@@ -76,7 +76,7 @@
           <br>
           <p>雨量設定須為整數或至小數點後第一位</p><br>
           <p><span>*</span>雨量</p>
-          <input required type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+          <input required type="number" size="10" min="1" max="10000" name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
           <span id='notice_rain'></span>
           <input class='button submit' type="submit" value="新增通知">
         </form>
