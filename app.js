@@ -26,7 +26,7 @@ app.set('view engine', 'ejs');
 
 app.use(flash());
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public' , 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,14 +60,14 @@ var filter = require('./lib/filter');
 var sendNotificationEmails = require('./lib/sendNotificationEmails');
 
 
-setInterval(
-  () => create()
-  .then(
-    obs => filter(obs)
-  )
-  .then( 
-    list => sendNotificationEmails(list)
-  )
-  ,600000
-)
+// setInterval(
+//   () => create()
+//   .then(
+//     obs => filter(obs)
+//   )
+//   .then( 
+//     list => sendNotificationEmails(list)
+//   )
+//   ,600000
+// )
 module.exports = app;

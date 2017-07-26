@@ -9,12 +9,13 @@ var checkEmail = (email) => {
 
 var password;
 var checkPw = (pw) => {
-  var pw1 = document.getElementById('password01').value,
-      pwRule=  /^(?=.*\d)(?=.*[A-Za-z]).{6,12}$/,
-      str = '';
+  var pwRule=  /^(?=.*\d)(?=.*[A-Za-z]).{6,12}$/,
+      str = '', pw1;
+  if(document.getElementById('password01') !== null) 
+    pw1 = document.getElementById('password01').value;
   pw = document.getElementById('password').value;
   (!pw.match(pwRule))? str='密碼格式錯誤' : str;
-  (!pw.match(pw1) && pw1 !== '')? str='密碼輸入不同' : str;
+  (!pw.match(pw1) && typeof pw1 !== undefined)? str='密碼輸入不同' : str;
   document.getElementById('notice_pw').innerHTML=str;
   password = pw;
 }
@@ -50,32 +51,6 @@ var login = () => {
       pw = document.getElementById('password').value;
   if(pw === '' || email === ''){
     document.getElementById('notice_login').innerHTML='帳號或密碼有誤';
-    return false;
-  }
-  return true;
-}
-
-//list_form
-var checkThreshold = (threshold) => {
-  var rainRule = /^[0-9]+(\.[0-9]{0,1})?$/;
-  threshold = document.getElementById(threshold).value;
-  (!rainRule.test(threshold))? str='雨量設定有誤' : str='';
-  document.getElementById('notice_rain').innerHTML=str;
-}
-
-var list = () => {
-  var city = document.getElementById('city').value,
-      county = document.getElementById('county').value,
-      stop = document.getElementById('stop').value,
-      timespan = document.getElementById('timespan').value,
-      threshold = document.getElementById('threshold').value,
-      str = '';
-  if(city === '請選擇縣市' || county === '請選擇鄉鎮區' || stop === '請選擇觀測站') str+='地區 ';
-  if(timespan === '請選擇間隔') str+='間隔 ';
-  if(threshold === '') str+='雨量 ';
-  if(str !== ''){
-    str += '欄位不為空';
-    document.getElementById('notice_list').innerHTML=str;
     return false;
   }
   return true;

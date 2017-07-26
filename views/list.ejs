@@ -5,153 +5,94 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
-  <script src="/javascripts/form.js"></script>
-  <script src="/data/pig-city.js"></script>
-  <script src="/data/pig-county.js"></script>
-  <script src="/data/pig-stop.js"></script>
-  <script src="/data/pig-timespan.js"></script>
+
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <% include ../views/partials/map %>
 </head>
 
 <body>
+  <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
+  <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
   <ul align='left'>
-    Welcome <span><%= user %></span> <span>▼</span>
-    <li>service</li>
+    Welcome <span><%= user %></span> <span>▼</span><br>
+    <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
   </ul>
-  <hr>
   <div class='container' align='center'>
     <div class='header'>
       <h1>Pig Weather</h1>
       <h2>Let you know where rain and when rain</h2>
     </div>
     <div class='content' align='left'>
-      <% if (messages.formInfo.length > 0) { %>
-      <div class="box flash">
-        <p><%= messages.formInfo %></p>
-      </div>
-      <% } %>
-      <div class='topbar'>
-        <p>地區</p>
-        <p>時間間隔</p>
-        <p>雨量（公釐）</p>
-      </div>
 
-      <% if (messages.length > 0) { %>
-      <div class="flash">
-        <p>
-          <%= messages %>
-        </p>
+
+      <div class='topbar'>
+        <div style="width:35%">
+          地區
+        </div>
+        <div style="width:20%">
+          雨量
+        </div>
+        <div style="width:20%">
+          間隔
+        </div>
       </div>
-      <% } %>
       <% items.forEach(function(item) { %>
-        <div class="box <%= item.addr.id %>">
+      <div class="box <%= item.addr.id %>">
+        <div style="width:35%;text-align: left;">
           <p class="area">
-            <%= item.addr.value %>
+            <%= item.addr.city %>
+            <br>
+            <%= item.addr.addr %>
           </p>
+        </div>
+        <div style="width:20%">
           <p class="threshold">
             <%= item.threshold %>
           </p>
+        </div>
+        <div style="width:20%">
           <p class="timespan">
             <%= item.timespan %>
           </p>
-          <a href="/list/delete/<%= item.addr.id %>"><p class='button button-delete'>刪除通知</p></a>
         </div>
-        <% }) %>
-        <p></p>
-        <div class='createbox' align='left'>
-          <h3 align='center'>新增下雨通知</h3>
-          <form action="/list" onsubmit="return list();" method="post">
-            <p><span id='notice_list'></span></p><br>
-            <p><span>*</span>地區</p>
-            <select name="city" id='city'>
-　            <option>請選擇縣市</option>
-            </select>
-              <select name="county" id='county'>
-　            <option>請選擇鄉鎮區</option>
-            </select>
-              <select name="stop" id='stop'>
-　            <option>請選擇觀測站</option>
-            </select><br>
-              <p><span>*</span>間隔</p>
-              <select name="timespan" id='timespan'>
-　            <option>請選擇間隔</option>
-            </select><br>
-
-              <script>
-                const city = document.querySelector('#city');
-                renderCity(); 
-                const county = document.querySelector('#county');
-                const stop = document.querySelector('#stop');
-                city.addEventListener('change', () => {
-                  renderCounty();
-                  renderStations();
-                });
-                county.addEventListener('change', renderStations);
-                renderTimespan();
-                <% if (messages.areaId.length > 0) { %>
-                  const repeatNotification = document.querySelector('.<%= messages.areaId %>');
-                  repeatNotification.classList.add('flash');
-                  const flash = document.createElement('p')
-                  flash.textContent = '<%= messages.info %>';
-                  repeatNotification.appendChild(flash);
-                <% } %>
-                function renderCity() {
-                  for (let area in pigCity) {
-                    let option = document.createElement('option');
-                    option.text = pigCity[area];
-                    option.setAttribute('value', area);
-                    city.add(option);
-                  }
-                }
-
-                function renderCounty() {
-                  while (county.firstChild) {
-                    county.removeChild(county.firstChild);
-                  }
-                  const citySelected = city.value;
-                  const countyFiltered = pigCounty[citySelected];
-                  for (let area in countyFiltered) {
-                    let option = document.createElement('option');
-                    option.text = countyFiltered[area];
-                    option.setAttribute('value', area);
-                    county.add(option);
-                  }
-                }
-                function renderStations() {
-                  while (stop.firstChild) {
-                    stop.removeChild(stop.firstChild);
-                  }
-                  const stopFiltered = pigStop[county.value];
-                  for (let area in stopFiltered) {
-                    let option = document.createElement('option');
-                    option.text = stopFiltered[area].addr;
-                    option.setAttribute('value', area);
-                    stop.add(option)
-                  }
-                }
-
-                function renderTimespan() {
-                  const timespan = document.querySelector('#timespan');
-                  for (let time in pigTimespan) {
-                    let option = document.createElement('option');
-                    option.text = pigTimespan[time];
-                    option.setAttribute('value', time);
-                    timespan.add(option);
-                  }
-                }
-            </script>
-
-            <p>雨量設定須為整數或至小數點後第一位</p><br>
-            <p><span>*</span>雨量</p>
-            <input type="text" size='8' name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
-            <span id='notice_rain'></span>
-            <input class='button' type="submit" value="新增通知">
-          </form>
+        <div style="width:20%">
+        <a href="/list/delete/<%= item.addr.id %>">
+          <p class='button button-delete'>刪除通知</p>
+        </a>
         </div>
       </div>
+      <% }) %>
+
+      <div class='createbox' align='left'>
+        <h3 align='center'>新增下雨通知</h3>
+        <form action="/list" method="post">
+          <p><span id='notice_list'></span></p><br>
+          <p><span>*</span>地區</p>
+          <select required name="city" id='city'>
+            <option value="">請選擇縣市</option>
+          </select>
+          <select required name="county" id='county'>
+            <option value="">請選擇鄉鎮區</option>
+          </select>
+          <select required name="stop" id='stop'>
+            <option value="">請選擇觀測站</option>
+          </select>
+          <br>
+          <p><span>*</span>間隔</p>
+          <select required name="timespan" id='timespan'>
+            <option value="">請選擇間隔</option>
+          </select>
+          <br>
+          <p>雨量設定須為整數或至小數點後第一位</p><br>
+          <p><span>*</span>雨量</p>
+          <input name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+          <span id='notice_rain'></span>
+          <input class='button submit' type="submit" value="新增通知">
+        </form>
+      </div>
+    </div>
     <div class='footer'>
       <hr>
       <h5>Contact us</h5>
@@ -159,5 +100,12 @@
       <h5>About us</h5>
     </div>
   </div>
-  </body >
-</html >
+  <script src="/javascripts/form.js"></script>
+  <script src="/data/pig-city.js"></script>
+  <script src="/data/pig-county.js"></script>
+  <script src="/data/pig-stop.js"></script>
+  <script src="/data/pig-timespan.js"></script>
+  <script src="/javascripts/list.js"></script>
+</body>
+
+</html>
