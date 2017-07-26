@@ -39,18 +39,28 @@
       </div>
       <% items.forEach(function(item) { %>
       <div class="box <%= item.addr.id %>">
-        <p class="area">
-          <%= item.addr.value %>
-        </p>
-        <p class="threshold">
-          <%= item.threshold %>
-        </p>
-        <p class="timespan">
-          <%= item.timespan %>
-        </p>
+        <div style="width:35%;text-align: left;">
+          <p class="area">
+            <%= item.addr.city %>
+            <br>
+            <%= item.addr.addr %>
+          </p>
+        </div>
+        <div style="width:20%">
+          <p class="threshold">
+            <%= item.threshold %>
+          </p>
+        </div>
+        <div style="width:20%">
+          <p class="timespan">
+            <%= item.timespan %>
+          </p>
+        </div>
+        <div style="width:20%">
         <a href="/list/delete/<%= item.addr.id %>">
           <p class='button button-delete'>刪除通知</p>
         </a>
+        </div>
       </div>
       <% }) %>
 
@@ -76,7 +86,7 @@
           <br>
           <p>雨量設定須為整數或至小數點後第一位</p><br>
           <p><span>*</span>雨量</p>
-          <input required type="number" size="10" min="1" max="10000" name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+          <input name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
           <span id='notice_rain'></span>
           <input class='button submit' type="submit" value="新增通知">
         </form>
