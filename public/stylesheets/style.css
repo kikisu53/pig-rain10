@@ -3,6 +3,12 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#map {
+   width: 100%;
+   height: 400px;
+   background-color: grey;
+ }
+
 ul {
   width: 10%;
   position: absolute;
@@ -17,6 +23,7 @@ li {
   padding: 5px;
   margin: 0 5px 0 5px;
   position: relative;
+  background-color: #FFF;
 }
 
 ul li {
@@ -133,7 +140,7 @@ li:hover {
   position: relative;
   border-radius: 10px;
   background-color: #FFF;
-  padding: 5px;
+  padding: 5px 0px 5px 0px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
   color: #2F4F4F;
 }
