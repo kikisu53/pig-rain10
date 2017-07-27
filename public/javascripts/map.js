@@ -18,6 +18,9 @@
 //   initMap();
 // });
 
+// safari 10.0 以上版本的geolocation API只接受https連線請求
+var key = true; //因為定位非同步，有時候使用者已經選擇位置，故當key＝true使用user GPS 定位
+
 function showStationById(id) {
     console.log(id);
     infoWindow.close();
@@ -45,16 +48,15 @@ function initMap() {
     var stopId = stop.value;
     var locate = {err:'定位失敗，使用系統預設值',lat: 24.052171, lng: 120.892433};
     if(stopId){
-        dlat = parseFloat(pigPos[stopId].lat);
-        dlng = parseFloat(pigPos[stopId].lon);
-        var locate = {lat: dlat, lng: dlng};
+        lat = parseFloat(pigPos[stopId].lat);
+        lng = parseFloat(pigPos[stopId].lon);
+        var locate = {lat: lat, lng: lng};
         return getMap(locate);
     }
     if(navigator.geolocation){
-        console.log('geo')
         return getUserLocation()
-        .then( data => getMap(data) )
-        .catch( () => getMap(locate))
+        .then( data => key ? getMap(data) : '' )
+        .catch( () => key ? getMap(locate) : '')
     }
     getMap(locate);
 }
@@ -62,8 +64,12 @@ function initMap() {
 function getUserLocation(){
     return new Promise((res,rej) => 
         navigator.geolocation.getCurrentPosition(
-            position => 
-                res( {lat: position.coords.latitude, lng: position.coords.longitude} ),
+            position => {
+                var lat = position.coords.latitude, lng = position.coords.longitude;
+                (lat>20 && lat<27 && lng>116 && lat<122)
+                ? res({lat: lat, lng: lng})
+                : res({err:'您的位置不在服務範圍內，使用系統預設值',lat: 24, lng: 121})
+            },
             err => rej(err.code)
         )
     );
