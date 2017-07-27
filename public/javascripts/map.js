@@ -1,6 +1,3 @@
-function test(ss) {
-    alert(ss)
-}
 
 // same list.js
 // const city = document.querySelector('#city');
@@ -46,7 +43,7 @@ var markerDict;
   // safari 10.0 以上版本的geolocation API只接受https連線請求
 function initMap() {
     var stopId = stop.value;
-    var locate = {err:'定位失敗，使用系統預設值',lat: 24, lng: 121};
+    var locate = {err:'定位失敗，使用系統預設值',lat: 24.052171, lng: 120.892433};
     if(stopId){
         dlat = parseFloat(pigPos[stopId].lat);
         dlng = parseFloat(pigPos[stopId].lon);
@@ -76,10 +73,9 @@ function getMap(locate) {
     if(locate.err) alert(locate.err);
     //Create google map
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
+    map = new google.maps.Map(document.querySelector('#map'), {
+        zoom: 7,
         center: {lat: locate.lat, lng: locate.lng}
->>>>>>> c72d24854acd1509e46ba86c51dae4fc02d5678c
     });
     infoWindow = new google.maps.InfoWindow();
     // Add markers to the map: markers = all stop
@@ -90,7 +86,10 @@ function getMap(locate) {
             id: i
         })
     }
+    // for function getMarkerById
     markerDict = {};
+
+    // create all markers
     for (let i in pigPos) {
         markerDict[i] = mark(i, pigPos[i]);
         markers.push(markerDict[i]);
