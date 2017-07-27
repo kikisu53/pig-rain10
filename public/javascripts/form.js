@@ -43,7 +43,7 @@ var register = () => {
     document.getElementById('notice_register').innerHTML=str;
     return false;
   }
-  return false;
+  return true;
 }
 
 //login_form

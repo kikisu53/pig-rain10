@@ -20,37 +20,42 @@ function test(ss){
 // stop.addEventListener('change', ()=>{
 //   initMap();
 // });
+
+// safari 10.0 以上版本的geolocation API只接受https連線請求
 function initMap(){
-    getStopLocation()
-    .then( data => data==='none' ? getUserLocation() : data)
-    .then( data => getMap(data) )
+    var stopId = stop.value;
+    var locate = {err:'定位失敗，使用系統預設值',lat: 24, lng: 121};
+    if(stopId){
+        dlat = parseFloat(pigPos[stopId].lat);
+        dlng = parseFloat(pigPos[stopId].lon);
+        var locate = {lat: dlat, lng: dlng};
+        return getMap(locate);
+    }
+    if(navigator.geolocation){
+        console.log('geo')
+        return getUserLocation()
+        .then( data => getMap(data) )
+        .catch( () => getMap(locate))
+    }
+    getMap(locate);
 }
 
 function getUserLocation(){
     return new Promise((res,rej) => 
-        navigator.geolocation.getCurrentPosition( position => 
-            res( {lat: position.coords.latitude, lng: position.coords.longitude} )
+        navigator.geolocation.getCurrentPosition(
+            position => 
+                res( {lat: position.coords.latitude, lng: position.coords.longitude} ),
+            err => rej(err.code)
         )
     );
 }
 
-function getStopLocation(){
-    var stopId = stop.value;
-    return new Promise((res,rej) => {
-        if(!stopId) return res('none');
-        if(stopId) {
-            dlat = parseFloat(pigPos[stopId].lat);
-            dlng = parseFloat(pigPos[stopId].lon);
-            return res({lat: dlat, lng: dlng});
-        }
-    })
-}
-
 function getMap(locate) {
+    if(locate.err) alert(locate.err);
     //Create google map
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: {lat: locate.lat||24, lng: locate.lng||121}
+        center: {lat: locate.lat, lng: locate.lng}
     });
 
     // Add markers to the map: markers = all stop
