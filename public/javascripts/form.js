@@ -14,6 +14,7 @@ var checkPw = (pw) => {
   if(document.getElementById('password01') !== null) 
     pw1 = document.getElementById('password01').value;
   pw = document.getElementById('password').value;
+  console.log({pw,pw1})
   (!pw.match(pwRule))? str='密碼格式錯誤' : str;
   (!pw.match(pw1) && typeof pw1 !== undefined)? str='密碼輸入不同' : str;
   document.getElementById('notice_pw').innerHTML=str;
@@ -42,7 +43,7 @@ var register = () => {
     document.getElementById('notice_register').innerHTML=str;
     return false;
   }
-  return true;
+  return false;
 }
 
 //login_form
