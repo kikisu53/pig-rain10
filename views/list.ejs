@@ -5,11 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
-
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
+  <div id='map'></div>
   <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
   <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
   <ul align='left'>
@@ -25,8 +25,13 @@
       <h2>Let you know where rain and when rain</h2>
     </div>
     <div class='content' align='left'>
-
-
+      <% if (message.length > 0) { %>
+      <div class="box flash">
+        <p>
+          <%= message %>
+        </p>
+      </div>
+      <% } %>
       <div class='topbar'>
         <div style="width:35%">
           地區
@@ -88,7 +93,7 @@
           <br>
           <p>雨量設定須為整數或至小數點後第一位</p><br>
           <p><span>*</span>雨量</p>
-          <input name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
+          <input required type="number" step=".5" size="10" min="1" max="2147483647" name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
           <span id='notice_rain'></span>
           <input class='button submit' type="submit" value="新增通知">
         </form>
@@ -107,6 +112,7 @@
   <script src="/data/pig-stop.js"></script>
   <script src="/data/pig-timespan.js"></script>
   <script src="/javascripts/list.js"></script>
+  <% include ../views/partials/map %>
 </body>
 
 </html>
