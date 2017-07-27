@@ -3,6 +3,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+
 #map {
    width: 100%;
    height: 400px;
@@ -10,11 +11,10 @@ body {
    text-align: center;
    font-size: 60px;
  }
-
 ul {
   width: 10%;
   position: absolute;
-  padding-left: 70%; 
+  margin-left: 70%; 
 }
 
 li {
@@ -48,7 +48,6 @@ li:hover {
   background-color: #2F4F4F;
   color: #FFF;
   display: inline-block;
-
 }
 
 .container {
@@ -57,7 +56,7 @@ li:hover {
   background-position: -30px 100px;
   width: 100%;
   position: absolute;
-  z-index: -1;
+  z-index: 1;
 }
 
 .header {
@@ -67,12 +66,31 @@ li:hover {
 .content{
   width: 35%;
   min-height: 450px;
+  margin-top: 2%; 
 }
 
 .content p {
     display: inline-block;
     margin: 10px 10px 10px 20px;
 }
+
+.rightside {
+  width: 40%;
+  float: left;
+  margin: 0px 2.5% 10px 2.5%;
+}
+
+.lefttside {
+  width: 50%;
+  margin: 50px 2.5% 10px 2.5%;
+}
+
+#map {
+  width: auto;
+  height: 500px;
+  border-radius: 5px;
+  border: #2F4F4F 0.2px solid;
+ }
 
 .topbar {
   width: 100%;
@@ -173,6 +191,7 @@ input:focus {
   top:  90%;
   min-height: 100px;
   color: #2F4F4F;
+  clear: both;
 }
 
 .footer h5{
@@ -188,16 +207,22 @@ a {
   ul {
     position: relative;
     width: 100%;
-    padding-left: 0%; 
+    margin-left: 0px; 
   }
   li{
-    width: 100%;
+    width: 80%;
   }
   .container {
     position: relative;
   }
   .content{
     width: 95%;
+  }
+  .rightside{
+    width: 100%;
+  }
+  .leftside{
+    width: 100%;
   }
 }
 

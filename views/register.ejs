@@ -29,7 +29,7 @@
             <span id='notice_email'></span>
             <p>密碼設定長度需為6~12字元，至少包含1個字母和1個數字</p>
             <p>密碼&nbsp;<input id='password' type="password" name="password" onchange="checkPw(this.id)"></p><br>
-            <p>確認密碼&nbsp;<input id='password1' type="password" name="password01" onchange="againPw(this.id)"></p><br>
+            <p>確認密碼&nbsp;<input id='password01' type="password" name="password01" onchange="againPw(this.id)"></p><br>
             <span id='notice_pw'></span><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input class='button' type="submit" value="註冊">
