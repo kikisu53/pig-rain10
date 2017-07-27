@@ -13,7 +13,7 @@
   </head>
   <body>
     <ul align='left'>
-    Welcome <span></span> <span>▼</span><br>
+    Welcome <span><%= user %></span> <span>▼</span><br>
     <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
@@ -27,18 +27,19 @@
       <div class='content'>
         <div class='box'>
           <h3>修改密碼</h3>
-          <form action="/user/changepw" onsubmit="return register();" method ="post">
-            <p><span id='notice_register'></span></p><br>
-            <p>帳號&nbsp;<input id='user' type="text" name="user" value='email@abc.com' onchange="checkEmail(this.id)"
-              onblur="if (this.value == '') {this.value = 'email@abc.com';}"
-              onfocus="if (this.value == 'email@abc.com') {this.value = '';}">
-            </p><br>
-            <span id='notice_email'></span><br>
-            <p>密碼設定長度需為6~12字元，至少包含1個字母和1個數字</p>
-            <p>舊密碼&nbsp;<input id='oldpw' type="password" name="oldpw"></p><br>
-            <p>密碼&nbsp;<input id='password' type="password" name="password" onchange="checkPw(this.id)"></p><br>
-            <p>確認密碼&nbsp;<input id='password01' type="password" name="password01" onchange="againPw(this.id)"></p><br>
-            <span id='notice_pw'></span><br>
+          <form action="/user/serachmap" onsubmit="return register();" method ="post">
+          <p><span>*</span>地區</p>
+          <select required name="city" id='city'>
+            <option value="">請選擇縣市</option>
+          </select>
+          <select required name="county" id='county'>
+            <option value="">請選擇鄉鎮區</option>
+          </select><br>
+          <p>&emsp;&emsp;&ensp;</P>
+          <select required name="stop" id='stop'>
+            <option value="">請選擇觀測站</option>
+          </select>
+          <br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input class='button' type="submit" value="修改密碼">
           </form>

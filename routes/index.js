@@ -39,7 +39,8 @@ router.get('/', function(req, res, next) {
 router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
-  if(ask==='changepw') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user});
+  //console.log('user:'+user)
+  if(ask==='changepw' || ask==='searchmap') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user});
   req.session && req.session.logined
   ? res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
@@ -115,7 +116,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
 })
 
 router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next) {
-  var user = req.body.user, password = req.body.password, pw1 = req.body.password1, oldpw = req.body.oldpw;
+  var user = req.body.user, password = req.body.password, pw1 = req.body.password01, oldpw = req.body.oldpw;
   if( password!==pw1  || check(user,'email') || check(password,'pw' || check(oldpw,'pw')) ) {
     return res.render('changepw',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
   }
