@@ -69,7 +69,7 @@ li:hover {
 .rightside {
   width: 40%;
   float: left;
-  margin: 0px 2.5% 10px 2.5%;
+  margin: 0px 1% 10px 1%;
 }
 
 .lefttside {
@@ -198,7 +198,7 @@ a {
 @media screen and (max-width: 768px){
   ul {
     position: relative;
-    width: 100%;
+    width: 90%;
     margin-left: 0px; 
   }
   li{
