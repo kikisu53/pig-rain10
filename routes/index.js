@@ -119,7 +119,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
 router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password, pw1 = req.body.password01, oldpw = req.body.oldpw;
   if( password!==pw1  || check(user,'email') || check(password,'pw' || check(oldpw,'pw')) ) {
-    return res.render('changepw',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
+    return res.render('changepw',{err:'輸入資料錯誤', user:req.session.user, csrfToken: req.csrfToken()});
   }
   db.changepw( {user:user, password:password, oldpw:oldpw} )
   .then(result => {

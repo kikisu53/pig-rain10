@@ -27,8 +27,8 @@
       <div class='content'>
         <div class='box'>
           <h3>修改密碼</h3>
-          <form action="/user/changepw" onsubmit="return register();" method ="post">
-            <p><span id='notice_register'></span></p><br>
+
+          <form action="/user/changepw" onsubmit="return register()" method ="post">
             <p>帳號&nbsp;<input id='user' type="text" name="user" value='email@abc.com' onchange="checkEmail(this.id)"
               onblur="if (this.value == '') {this.value = 'email@abc.com';}"
               onfocus="if (this.value == 'email@abc.com') {this.value = '';}">
@@ -41,6 +41,7 @@
             <span id='notice_pw'></span><br>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input class='button' type="submit" value="修改密碼">
+            <input class='button' type="button" onclick="javascript:location.href='/'" value="放棄修改">
           </form>
         </div>
       </div>

@@ -1,26 +1,24 @@
-
-
-const city = document.querySelector('#city');
+var city = document.querySelector('#city');
+var county = document.querySelector('#county');
+var stop = document.querySelector('#stop');
+var region = document.querySelector('.region');
 renderCity();
-const county = document.querySelector('#county');
-const stop = document.querySelector('#stop');
+renderTimespan();
 city.addEventListener('change', () => {
   renderCounty();
   renderStations();
-  initMap();
 });
 county.addEventListener('change', () => {
   renderStations();
-  initMap();
 });
-renderTimespan();
-stop.addEventListener('change', () => {
-  initMap();
-});
+region.addEventListener('change', () => {
+  console.log('hi');
+  showStationById(stop.value);
+})
 // <% if (messages.areaId.length > 0) { %>
-//   const repeatNotification = document.querySelector('.<%= messages.areaId %>');
+//   var repeatNotification = document.querySelector('.<%= messages.areaId %>');
 //   repeatNotification.classList.add('flash');
-//   const flash = document.createElement('p')
+//   var flash = document.createElement('p')
 //   flash.textContent = '<%= messages.info %>';
 //   repeatNotification.appendChild(flash);
 // <% } %>
@@ -35,8 +33,8 @@ function renderCity() {
 
 function renderCounty() {
   removeAllChild(county);
-  const citySelected = city.value;
-  const countyFiltered = pigCounty[citySelected];
+  var citySelected = city.value;
+  var countyFiltered = pigCounty[citySelected];
   for (let area in countyFiltered) {
     let option = document.createElement('option');
     option.text = countyFiltered[area];
@@ -46,7 +44,7 @@ function renderCounty() {
 }
 function renderStations() {
   removeAllChild(stop);
-  const stopFiltered = pigStop[county.value];
+  var stopFiltered = pigStop[county.value];
   for (let area in stopFiltered) {
     let option = document.createElement('option');
     option.text = stopFiltered[area].addr;
@@ -54,9 +52,8 @@ function renderStations() {
     stop.add(option)
   }
 }
-
 function renderTimespan() {
-  const timespan = document.querySelector('#timespan');
+  var timespan = document.querySelector('#timespan');
   for (let time in pigTimespan) {
     let option = document.createElement('option');
     option.text = pigTimespan[time];
