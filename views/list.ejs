@@ -9,7 +9,6 @@
 </head>
 
 <body>
-  <div id='map'></div>
   <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
   <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
   <ul align='left'>
@@ -17,13 +16,15 @@
     <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
+    <a href='/user/searchmap'><li>search map</li></a>     
   </ul>
   <div class='container' align='center'>
     <div class='header'>
       <h1>Pig Weather</h1>
       <h2>Let you know where rain and when rain</h2>
     </div>
-    <div class='content' align='left'>
+    <div class='content' align='left' style="width:95%">
+      <div class='rightside'>
       <% if (message.length > 0) { %>
       <div class="box flash">
         <p>
@@ -68,7 +69,6 @@
         </div>
       </div>
       <% }) %>
-
       <div class='createbox' align='left'>
         <h3 align='center'>新增下雨通知</h3>
         <form action="/list" method="post">
@@ -99,6 +99,10 @@
           <input class='button submit' type="submit" value="新增通知">
         </form>
       </div>
+    </div>
+    <div class='leftside'>
+      <div id='map'></div>
+    </div>
     </div>
     <div class='footer'>
       <hr>
