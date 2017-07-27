@@ -32,22 +32,22 @@ function showStationById(id) {
     map.setZoom(15);
     map.setCenter(pos);
     console.log(map.getCenter())
-    setTimeout(() => google.maps.event.trigger(marker, 'click'), 000);
+    setTimeout(() => google.maps.event.trigger(marker, 'click'), 1000);
     
 }
 function getMarkerById(id) {
-    return markers.filter(marker => marker.id === id)[0];
+    return markerDict[id];
 }
 var map;
 var markers;
 var infoWindow;
+var markerDict;
 function initMap() {
     var stopId = stop.value;
-
     //Create google map
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: { lat: 25, lng: 121 }
+        zoom: 7,
+        center: { lat: 24.148494, lng: 120.924061 }
     });
     infoWindow = new google.maps.InfoWindow();
     // Add some markers to the map.
@@ -58,8 +58,10 @@ function initMap() {
             id: i
         })
     }
+    markerDict = {};
     for (let i in pigPos) {
-        markers.push(mark(i, pigPos[i]));
+        markerDict[i] = mark(i, pigPos[i]);
+        markers.push(markerDict[i]);
     }
     // When markers onclick
     markers.map(v => v.addListener('click', () => addInfoWindows(v)));
