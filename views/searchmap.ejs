@@ -1,56 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width"/>
-    <title>Pig Weather clock</title>
-    <script src="/javascripts/form.js"></script>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script>
-      var err = '<%= err %>';
-      if(err!=='') alert(err);
-    </script>
-  </head>
-  <body>
-    <ul align='left'>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>Pig Weather clock</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
+  <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
+  <ul align='left'>
     Welcome <span><%= user %></span> <span>▼</span><br>
     <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
-    <a href='/user/searchmap'><li>search map</li></a>
+    <a href='/user/searchmap'><li>search map</li></a>     
   </ul>
-    <div class='container' align='center'>
-      <div class='header'>
-        <h1>Pig Weather</h1>
-        <h2>Let you know where rain and when rain</h2>
-      </div>
-      <div class='content'>
-        <div class='box'>
-          <h3>修改密碼</h3>
-          <form action="/user/serachmap" onsubmit="return register();" method ="post">
-          <p><span>*</span>地區</p>
-          <select required name="city" id='city'>
-            <option value="">請選擇縣市</option>
-          </select>
-          <select required name="county" id='county'>
-            <option value="">請選擇鄉鎮區</option>
-          </select><br>
-          <p>&emsp;&emsp;&ensp;</P>
-          <select required name="stop" id='stop'>
-            <option value="">請選擇觀測站</option>
-          </select>
-          <br>
+  <div class='container' align='center'>
+    <div class='header'>
+      <h1>Pig Weather</h1>
+      <h2>Let you know where rain and when rain</h2>
+    </div>
+    <div class='content' align='left' style="width:95%">
+      <div class='rightside'>
+        <div class='createbox'>
+          <h3 align='center'>查詢最近的觀測站</h3>
+          <form action="/user/searchmap" method="post">
+            <p>地區</p>
+            <select name="city" id='city'>
+              <option value="">請選擇縣市</option>
+            </select>
+            <select name="county" id='county'>
+              <option value="">請選擇鄉鎮區</option>
+            </select><br>
+            <p>&emsp;&emsp;&ensp;</P>
+            <select name="stop" id='stop'>
+              <option value="">請選擇觀測站</option>
+            </select><br>
+            <p>地址&nbsp;<input type="text" name="address" id="address"></p>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input class='button' type="submit" value="修改密碼">
+            <input class='button submit' type="submit" value="查詢">
           </form>
         </div>
       </div>
-      <div class='footer'>
-        <hr>
-        <h5>Contact us</h5>
-        <h5>|</h5>
-        <h5>About us</h5>
+      <div class='leftside'>
+        <div id='map'></div>
       </div>
     </div>
-  </body>
+    <div class='footer'>
+      <hr>
+      <h5>Contact us</h5>
+      <h5>|</h5>
+      <h5>About us</h5>
+    </div>
+  </div>
+  <script src="/javascripts/form.js"></script>
+  <script src="/data/pig-city.js"></script>
+  <script src="/data/pig-county.js"></script>
+  <script src="/data/pig-stop.js"></script>
+  <script src="/javascripts/list.js"></script>
+  <% include ../views/partials/map %>
+</body>
+
 </html>
