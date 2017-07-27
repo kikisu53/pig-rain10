@@ -11,6 +11,7 @@ const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
+const pos = require('../lib/findGPS');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
@@ -39,7 +40,8 @@ router.get('/', function(req, res, next) {
 router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
-  if(ask==='changepw') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user});
+  //console.log('user:'+user)
+  if(ask==='changepw' || ask==='searchmap') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user});
   req.session && req.session.logined
   ? res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
@@ -115,7 +117,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
 })
 
 router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next) {
-  var user = req.body.user, password = req.body.password, pw1 = req.body.password1, oldpw = req.body.oldpw;
+  var user = req.body.user, password = req.body.password, pw1 = req.body.password01, oldpw = req.body.oldpw;
   if( password!==pw1  || check(user,'email') || check(password,'pw' || check(oldpw,'pw')) ) {
     return res.render('changepw',{err:'輸入資料錯誤', user:req.session.user, csrfToken: req.csrfToken()});
   }
@@ -123,6 +125,16 @@ router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next
   .then(result => {
       if(result===2) return res.redirect('/');
       res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
+  })
+})
+
+router.post('/user/searchmap', parseForm, csrfProtection, function(req, res, next) {
+  var user = req.body.user, address = req.body.address;
+  address = pos.checkPos(address)
+  pos.transPos(address)
+  .then(result => {
+    console.log(result)
+    res.send(result)
   })
 })
 
