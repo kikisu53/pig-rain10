@@ -1,4 +1,4 @@
-// same list.js
+// same as list.js
 // const city = document.querySelector('#city');
 // renderCity();
 // const county = document.querySelector('#county');
@@ -16,9 +16,6 @@
 // stop.addEventListener('change', ()=>{
 //   initMap();
 // });
-
-// safari 10.0 以上版本的geolocation API只接受https連線請求
-var key = true; //因為定位非同步，有時候使用者已經選擇位置，故當key＝true使用user GPS 定位
 
 function showStationById(id) {
     console.log(id);
@@ -43,6 +40,7 @@ var markers;
 var infoWindow;
 var markerDict;
 // safari 10.0 以上版本的geolocation API只接受https連線請求
+var key = true;
 function initMap() {
     var stopId = stop.value;
     var locate = { err: '定位失敗，使用系統預設值', lat: 24.052171, lng: 120.892433 };
@@ -107,7 +105,11 @@ function createAllMarkers() {
     }
 
     // When markers onclick
-    markers.map(marker => marker.addListener('click', () => addInfoWindows(marker)));
+   markers.map(v => v.addListener('click', () => {
+        addInfoWindows(v);
+        var marker = getMarkerById(v.id);
+        addMarkerAddr(marker.id);
+    }));
 
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers, {
@@ -128,5 +130,25 @@ function addInfoWindows(marker) {
         ].join('<br>');
     }
     infoWindow.setContent(contentString);
-    infoWindow.open(map, marker);
+    infoWindow.open(map, v);
+}
+
+function addMarkerAddr(stopId){
+    var list = pigArea[stopId];
+    var cityId = list.cityId;
+    var countyId = list.countyId;
+console.log({cityId, countyId, stopId});
+    changeOptSelected(city, cityId);
+    renderCounty();
+    changeOptSelected(county, countyId);
+    renderStations()
+    changeOptSelected(stop, stopId);
+}
+
+function changeOptSelected(selectElement, optionElement){
+    var list = selectElement.childNodes;
+    for(let i in list){
+        list[i].selected = 
+            list[i].value===optionElement ? true : false;
+    } 
 }
