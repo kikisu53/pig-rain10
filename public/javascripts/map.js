@@ -43,9 +43,12 @@ var infoWindow;
 var markerDict;
 var heremark;
 // safari 10.0 以上版本的geolocation API只接受https連線請求
+
 var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
 function initMap(stopId) {
+    geocoder = new google.maps.Geocoder();
     var locate = { lat: 24.052171, lng: 120.892433 };
+
     if (stopId) {
         key = false;
         console.log(key)
@@ -156,6 +159,22 @@ function addInfoWindows(marker) {
     infoWindow.open(map, marker);
 }
 
+function codeAddress() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
+        });
+      } else {
+        alert('地址轉換失敗，請輸入有效地址');
+      }
+    });
+  }
+
 function addMarkerAddr(stopId){
     var list = pigArea[stopId];
     var cityId = list.cityId;
@@ -185,3 +204,4 @@ function findGPS(addr){
     );
 
 }
+

@@ -11,7 +11,6 @@ const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
-const pos = require('../lib/findGPS');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
@@ -123,16 +122,6 @@ router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next
   .then(result => {
       if(result===2) return res.redirect('/');
       res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
-  })
-})
-
-router.post('/user/searchmap', parseForm, csrfProtection, function(req, res, next) {
-  var user = req.body.user, address = req.body.address;
-  address = pos.checkPos(address)
-  pos.transPos(address)
-  .then(result => {
-    console.log(result)
-    res.send(result)
   })
 })
 
