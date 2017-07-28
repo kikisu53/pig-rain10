@@ -9,7 +9,6 @@
 </head>
 
 <body>
-  <div id='map'> 載入中...</div>
   <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
   <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
   <ul align='left'>
@@ -18,13 +17,11 @@
     <a href='/logout'><li>logout</li></a>
     <a href='/user/changepw'><li>change password</li></a>
     <a href='/user/searchmap'><li>search map</li></a>     
-  </ul>
+  </ul><br>
   <div class='container' align='center'>
-    <div class='header'>
-      <h1>Pig Weather</h1>
-      <h2>Let you know where rain and when rain</h2>
-    </div>
-    <div class='content' align='left' style="width:95%">
+    <h1>Pig Weather</h1>
+    <h2>Let you know where rain and when rain</h2>
+    <div class='contentmap' align='left'>
       <div class='rightside'>
       <% if (message.length > 0) { %>
       <div class="box flash">
@@ -102,7 +99,7 @@
       </div>
     </div>
     <div class='leftside'>
-      <div id='map'></div>
+      <div id='map'> 載入中...</div>
     </div>
     </div>
     <div class='footer'>
