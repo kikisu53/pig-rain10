@@ -1,8 +1,4 @@
-function test(ss) {
-    alert(ss)
-}
-
-// same list.js
+// same as list.js
 // const city = document.querySelector('#city');
 // renderCity();
 // const county = document.querySelector('#county');
@@ -21,12 +17,6 @@ function test(ss) {
 //   initMap();
 // });
 
-<<<<<<< HEAD
-// safari 10.0 以上版本的geolocation API只接受https連線請求
-var key = true; //因為定位非同步，有時候使用者已經選擇位置，故當key＝true使用user GPS 定位
-function initMap(findStop){
-    var stopId = findStop || stop.value;
-=======
 function showStationById(id) {
     console.log(id);
     infoWindow.close();
@@ -39,7 +29,7 @@ function showStationById(id) {
     map.setZoom(15);
     map.setCenter(pos);
     console.log(map.getCenter())
-    setTimeout(() => google.maps.event.trigger(marker, 'click'), 000);
+    setTimeout(() => google.maps.event.trigger(marker, 'click'), 1000);
     
 }
 function getMarkerById(id) {
@@ -48,10 +38,10 @@ function getMarkerById(id) {
 var map;
 var markers;
 var infoWindow;
-  // safari 10.0 以上版本的geolocation API只接受https連線請求
-function initMap() {
-    var stopId = stop.value;
->>>>>>> b4b49fcf33710e104470608f045577ece7a51d20
+// safari 10.0 以上版本的geolocation API只接受https連線請求
+var key = true; //因為定位非同步，有時候使用者已經選擇位置，故當key＝true使用user GPS 定位
+function initMap(findStop){
+    var stopId = findStop || stop.value; 
     var locate = {err:'定位失敗，使用系統預設值',lat: 24, lng: 121};
     if(stopId){
         lat = parseFloat(pigPos[stopId].lat);
@@ -91,7 +81,7 @@ function getMap(locate) {
     });
     infoWindow = new google.maps.InfoWindow();
     // Add markers to the map: markers = all stop
-    var markers = [];
+    markers = [];
     function mark(i, location){
         return new google.maps.Marker({
             position: { lng: parseFloat(location.lon), lat: parseFloat(location.lat) },
@@ -103,7 +93,11 @@ function getMap(locate) {
         markers.push(mark(i,pigPos[i]))
     }
     // When markers onclick
-    markers.map(v => v.addListener('click', () => addInfoWindows(v)));
+   markers.map(v => v.addListener('click', () => {
+        addInfoWindows(v);
+        var marker = getMarkerById(v.id);
+        addMarkerAddr(marker.id);
+    }));
 
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers,
@@ -125,4 +119,24 @@ var addInfoWindows = (v) => {
     }
     infoWindow.setContent(contentString);
     infoWindow.open(map, v);
+}
+
+function addMarkerAddr(stopId){
+    var list = pigArea[stopId];
+    var cityId = list.cityId;
+    var countyId = list.countyId;
+console.log({cityId, countyId, stopId});
+    changeOptSelected(city, cityId);
+    renderCounty();
+    changeOptSelected(county, countyId);
+    renderStations()
+    changeOptSelected(stop, stopId);
+}
+
+function changeOptSelected(selectElement, optionElement){
+    var list = selectElement.childNodes;
+    for(let i in list){
+        list[i].selected = 
+            list[i].value===optionElement ? true : false;
+    } 
 }

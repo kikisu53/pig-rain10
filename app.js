@@ -63,11 +63,11 @@ var sendNotificationEmails = require('./lib/sendNotificationEmails');
 // setInterval(
 //   () => create()
 //   .then(
-//     obs => filter(obs)
+//     obs => {console.log('in');filter(obs)}
 //   )
-//   .then( 
-//     list => sendNotificationEmails(list)
-//   )
-//   ,600000
+//   // .then( 
+//   //   list => sendNotificationEmails(list)
+//   // )
+//   ,6000
 // )
 module.exports = app;
