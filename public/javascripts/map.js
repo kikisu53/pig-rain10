@@ -18,6 +18,8 @@
 // });
 
 function showStationById(id) {
+    key = false;
+    if(map===undefined) return initMap(id); //預防地圖未產生前，使用者就點選頁面上功能（地圖為非同步）
     console.log(id);
     var marker = getMarkerById(id);
     var pos = {
@@ -39,23 +41,35 @@ var map;
 var markers;
 var infoWindow;
 var markerDict;
+var heremark;
 // safari 10.0 以上版本的geolocation API只接受https連線請求
-var key = true;
-function initMap() {
-    var stopId = stop.value;
-    var locate = { err: '定位失敗，使用系統預設值', lat: 24.052171, lng: 120.892433 };
+var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
+function initMap(stopId) {
+    var locate = { lat: 24.052171, lng: 120.892433 };
     if (stopId) {
+        key = false;
+        console.log(key)
         lat = parseFloat(pigPos[stopId].lat);
         lng = parseFloat(pigPos[stopId].lon);
         locate = { lat: lat, lng: lng };
         return getMap(locate);
     }
+    getMap(locate);
     if (navigator.geolocation) {
         return getUserLocation()
-            .then(data => key ? getMap(data) : '')
-            .catch(() => key ? getMap(locate) : '')
+            .then(data => {
+                if(key) {
+                    alert('為您定位中');
+                    map.setCenter(data);
+                    heremark = new google.maps.Marker({
+                        position: data,
+                     //   icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png',
+                        map: map
+                    });
+                }
+            })
+            .catch(() => key ? alert('無法偵測到您到位置') : '')
     }
-    getMap(locate);
 }
 
 function getUserLocation() {
@@ -73,9 +87,7 @@ function getUserLocation() {
 }
 
 function getMap(locate) {
-    if (locate.err) alert(locate.err);
     //Create google map
-
     map = new google.maps.Map(document.querySelector('#map'), {
         zoom: 14,
         center: { lat: locate.lat, lng: locate.lng }
@@ -88,9 +100,12 @@ function createAllMarkers() {
     // createAllMarkers();
     // Add markers to the map: markers = all stop
     markers = [];
-    function mark(i, location) {
+    function mark(i, location, type) {
+        pos = type==='noGPS'
+        ? location
+        : { lng: parseFloat(location.lon), lat: parseFloat(location.lat) };
         return new google.maps.Marker({
-            position: { lng: parseFloat(location.lon), lat: parseFloat(location.lat) },
+            position: pos,
             id: i
         });
     }
@@ -99,16 +114,24 @@ function createAllMarkers() {
     markerDict = {};
 
     // create all markers
-    for (let i in pigPos) {
+    for (let i in pigArea) {
+        if(pigPos[i]===undefined) {
+            console.log(i)
+            var data = pigArea[i];
+            findGPS(data.city+data.addr).then( GPS => {
+                markerDict[i] = mark(i, GPS, 'noGPS');
+                markers.push(markerDict[i]);
+            });
+            continue;
+        }
         markerDict[i] = mark(i, pigPos[i]);
         markers.push(markerDict[i]);
     }
 
     // When markers onclick
-   markers.map(v => v.addListener('click', () => {
+    markers.map(v => v.addListener('click', () => {
         addInfoWindows(v);
-        var marker = getMarkerById(v.id);
-        addMarkerAddr(marker.id);
+        addMarkerAddr(v.id);
     }));
 
     // Add a marker clusterer to manage the markers.
@@ -130,14 +153,13 @@ function addInfoWindows(marker) {
         ].join('<br>');
     }
     infoWindow.setContent(contentString);
-    infoWindow.open(map, v);
+    infoWindow.open(map, marker);
 }
 
 function addMarkerAddr(stopId){
     var list = pigArea[stopId];
     var cityId = list.cityId;
     var countyId = list.countyId;
-console.log({cityId, countyId, stopId});
     changeOptSelected(city, cityId);
     renderCounty();
     changeOptSelected(county, countyId);
@@ -151,4 +173,15 @@ function changeOptSelected(selectElement, optionElement){
         list[i].selected = 
             list[i].value===optionElement ? true : false;
     } 
+}
+
+function findGPS(addr){
+    geocoder = new google.maps.Geocoder();
+    return new Promise((res,rej) => 
+        geocoder.geocode( { 'address': addr }, function(results, status) {
+            if (status == 'OK') res(results[0].geometry.location);
+            console.log(status);
+        })
+    );
+
 }
