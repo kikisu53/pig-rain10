@@ -1,4 +1,4 @@
-// same list.js
+// same as list.js
 // const city = document.querySelector('#city');
 // renderCity();
 // const county = document.querySelector('#county');
@@ -17,10 +17,9 @@
 //   initMap();
 // });
 
-// safari 10.0 以上版本的geolocation API只接受https連線請求
-var key = true; //因為定位非同步，有時候使用者已經選擇位置，故當key＝true使用user GPS 定位
-
 function showStationById(id) {
+    key = false;
+    if(map===undefined) return initMap(id); //預防地圖未產生前，使用者就點選頁面上功能（地圖為非同步）
     console.log(id);
     var marker = getMarkerById(id);
     var pos = {
@@ -42,23 +41,38 @@ var map;
 var markers;
 var infoWindow;
 var markerDict;
+var heremark;
 // safari 10.0 以上版本的geolocation API只接受https連線請求
-function initMap() {
+
+var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
+function initMap(stopId) {
     geocoder = new google.maps.Geocoder();
-    var stopId = stop.value;
-    var locate = { err: '定位失敗，使用系統預設值', lat: 24.052171, lng: 120.892433 };
+    var locate = { lat: 24.052171, lng: 120.892433 };
+
     if (stopId) {
+        key = false;
+        console.log(key)
         lat = parseFloat(pigPos[stopId].lat);
         lng = parseFloat(pigPos[stopId].lon);
         locate = { lat: lat, lng: lng };
         return getMap(locate);
     }
+    getMap(locate);
     if (navigator.geolocation) {
         return getUserLocation()
-            .then(data => key ? getMap(data) : '')
-            .catch(() => key ? getMap(locate) : '')
+            .then(data => {
+                if(key) {
+                    alert('為您定位中');
+                    map.setCenter(data);
+                    heremark = new google.maps.Marker({
+                        position: data,
+                     //   icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png',
+                        map: map
+                    });
+                }
+            })
+            .catch(() => key ? alert('無法偵測到您到位置') : '')
     }
-    getMap(locate);
 }
 
 function getUserLocation() {
@@ -76,20 +90,25 @@ function getUserLocation() {
 }
 
 function getMap(locate) {
-    if (locate.err) alert(locate.err);
     //Create google map
-
     map = new google.maps.Map(document.querySelector('#map'), {
         zoom: 14,
         center: { lat: locate.lat, lng: locate.lng }
     });
     infoWindow = new google.maps.InfoWindow();
+    createAllMarkers();
+}
+
+function createAllMarkers() {
     // createAllMarkers();
     // Add markers to the map: markers = all stop
     markers = [];
-    function mark(i, location) {
+    function mark(i, location, type) {
+        pos = type==='noGPS'
+        ? location
+        : { lng: parseFloat(location.lon), lat: parseFloat(location.lat) };
         return new google.maps.Marker({
-            position: { lng: parseFloat(location.lon), lat: parseFloat(location.lat) },
+            position: pos,
             id: i
         });
     }
@@ -98,24 +117,31 @@ function getMap(locate) {
     markerDict = {};
 
     // create all markers
-    for (let i in pigPos) {
+    for (let i in pigArea) {
+        if(pigPos[i]===undefined) {
+            console.log(i)
+            var data = pigArea[i];
+            findGPS(data.city+data.addr).then( GPS => {
+                markerDict[i] = mark(i, GPS, 'noGPS');
+                markers.push(markerDict[i]);
+            });
+            continue;
+        }
         markerDict[i] = mark(i, pigPos[i]);
         markers.push(markerDict[i]);
     }
 
     // When markers onclick
-    markers.map(marker => marker.addListener('click', () => addInfoWindows(marker)));
+    markers.map(v => v.addListener('click', () => {
+        addInfoWindows(v);
+        addMarkerAddr(v.id);
+    }));
 
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
         minimumClusterSize: 3
     });
-}
-
-function createAllMarkers() {
-    
-
 }
 
 function addInfoWindows(marker) {
@@ -148,3 +174,34 @@ function codeAddress() {
       }
     });
   }
+
+function addMarkerAddr(stopId){
+    var list = pigArea[stopId];
+    var cityId = list.cityId;
+    var countyId = list.countyId;
+    changeOptSelected(city, cityId);
+    renderCounty();
+    changeOptSelected(county, countyId);
+    renderStations()
+    changeOptSelected(stop, stopId);
+}
+
+function changeOptSelected(selectElement, optionElement){
+    var list = selectElement.childNodes;
+    for(let i in list){
+        list[i].selected = 
+            list[i].value===optionElement ? true : false;
+    } 
+}
+
+function findGPS(addr){
+    geocoder = new google.maps.Geocoder();
+    return new Promise((res,rej) => 
+        geocoder.geocode( { 'address': addr }, function(results, status) {
+            if (status == 'OK') res(results[0].geometry.location);
+            console.log(status);
+        })
+    );
+
+}
+
