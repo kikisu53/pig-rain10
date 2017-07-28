@@ -33,6 +33,9 @@ router.get('/', function (req, res, next) {
     console.log("Scan succeeded.");
     console.log(data.Items);
     var items = data.Items.map(item => {
+      if (!pigArea[item['area-id']]) {
+        return;
+      }
       var addr = {
         id: item['area-id'],
         city: pigArea[item['area-id']].city,
@@ -46,7 +49,7 @@ router.get('/', function (req, res, next) {
         threshold,
         timespan
       };
-    });
+    }).filter(x => x);
     res.render('list', {
       user,
       items,
