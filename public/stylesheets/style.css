@@ -131,6 +131,8 @@ li:hover {
   border: #2F4F4F 0.2px solid;
   border-radius: 5px;
   font-size: 14px;
+  padding: 5px;
+  margin: 5px;
 }
 
 .button {
@@ -141,6 +143,7 @@ li:hover {
   background-color: #2F4F4F;
   color: #FFF;
   cursor: pointer;
+  
 }
 
 .button:focus {
@@ -230,5 +233,5 @@ a {
 }
 
 .flash {
-  background-color: pink;
+  background-color: palegreen;
 }
