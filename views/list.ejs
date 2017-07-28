@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
+
 </head>
 
 <body>
@@ -74,6 +75,11 @@
         <h3 align='center'>新增下雨通知</h3>
         <form action="/list" method="post">
           <p><span id='notice_list'></span></p><br>
+          <p id='test'></p><br>
+          <p>&ensp;地址</p>
+          <input type="text" name='address' id='address'/>
+          <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
+          <br>
           <div class="region">
             <p><span>*</span>地區</p>
             <select required name="city" id='city'>
@@ -123,3 +129,5 @@
 </body>
 
 </html>
+
+

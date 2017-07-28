@@ -58,7 +58,6 @@ router.post('/', function (req, res, next) {
   var areaId = req.body.stop;
   var user = req.session.user || testEmail;
   var timespan = req.body.timespan;
-
   var threshold = Number(req.body.threshold);
   if (!isFinite(threshold)) {
     console.log('invalid threshold!');
@@ -122,6 +121,5 @@ router.get('/delete/:area_id', function (req, res, next) {
     }
   });
 })
-
 
 module.exports = router;
