@@ -83,9 +83,9 @@ router.post('/', function (req, res, next) {
       res.redirect('/list');
       return;
     }
-    var updateMessage = 'Notification Update: ';
+    var updateMessage = 'Notification Updated: ';
     updateMessage += pigArea[areaId].city + pigArea[areaId].addr;
-    var createMessage = 'Notification Create: ';
+    var createMessage = 'Notification Created: ';
     createMessage += pigArea[areaId].city + pigArea[areaId].addr;
 
     console.log("Added item: ", JSON.stringify(data, null, 2));
