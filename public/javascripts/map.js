@@ -1,4 +1,3 @@
-
 // same list.js
 // const city = document.querySelector('#city');
 // renderCity();

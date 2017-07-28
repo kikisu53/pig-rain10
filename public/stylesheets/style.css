@@ -6,7 +6,8 @@ body {
 ul {
   width: 10%;
   position: absolute;
-  margin-left: 70%; 
+  margin-left: 70%;
+  z-index: 1;
 }
 
 li {
@@ -18,12 +19,12 @@ li {
   margin: 0 5px 0 5px;
   position: relative;
   background-color: #FFF;
+  color: #2F4F4F;
 }
 
 ul li {
   display: none;
   position: relative;
-  z-index: 0;
 }
 
 ul:hover {
@@ -48,11 +49,13 @@ li:hover {
   background-position: -30px 100px;
   width: 100%;
   position: absolute;
-  z-index: 1;
+  z-index: 0;
 }
 
-.header {
-  padding-top: 2%;
+.contentmap{
+  width: 80%;
+  min-height: 450px;
+  margin-top: 2%; 
 }
 
 .content{
@@ -63,7 +66,12 @@ li:hover {
 
 .content p {
     display: inline-block;
-    margin: 10px 10px 10px 20px;
+    margin: 5px 5px 5px 15px;
+}
+
+.contentmap p {
+    display: inline-block;
+    margin: 5px 5px 5px 15px;
 }
 
 .rightside {
@@ -91,8 +99,8 @@ li:hover {
   border-radius: 10px;
   background-color: #2F4F4F;
   padding: 5px 0px 5px 0px;
-  box-shadow: 0.2px 0.2px 2px #FFFACD;
-  color: #FFFACD;
+  
+  color: #FFF;
 }
 
 .topbar div {
@@ -106,7 +114,7 @@ li:hover {
   width: 100%;
   position: relative;
   border-radius: 10px;
-  background-color: #FFFACD;
+  background-color: #FFF;
   margin: 5px 0px 5px 0px;
   padding: 5px 0px 5px 0px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
@@ -198,7 +206,7 @@ a {
 @media screen and (max-width: 768px){
   ul {
     position: relative;
-    width: 100%;
+    width: 90%;
     margin-left: 0px; 
   }
   li{
@@ -207,6 +215,9 @@ a {
   .container {
     position: relative;
   }
+  .contentmap{
+    width: 95%;
+  }  
   .content{
     width: 95%;
   }
