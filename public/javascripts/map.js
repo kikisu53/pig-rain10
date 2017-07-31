@@ -47,7 +47,9 @@ var heremark;
 var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
 function initMap(stopId) {
     geocoder = new google.maps.Geocoder();
-    var locate = { lat: 24.052171, lng: 120.892433 };
+    var lastLocation = document.querySelector('.mapCenter').value;
+    lastLocation = lastLocation && JSON.parse(lastLocation);
+    var locate = lastLocation || { lat: 24.052171, lng: 120.892433 };
 
     if (stopId) {
         key = false;
@@ -58,11 +60,15 @@ function initMap(stopId) {
         return getMap(locate);
     }
     getMap(locate);
+}
+
+document.querySelector('.getLocation').addEventListener('click', useCurrentLocation);
+function useCurrentLocation() {
     if (navigator.geolocation) {
         return getUserLocation()
             .then(data => {
                 if(key) {
-                    alert('為您定位中');
+                    // alert('為您定位中');
                     map.setCenter(data);
                     heremark = new google.maps.Marker({
                         position: data,
@@ -74,6 +80,7 @@ function initMap(stopId) {
             .catch(() => key ? alert('無法偵測到您到位置') : '')
     }
 }
+
 
 function getUserLocation() {
     return new Promise((res, rej) =>
@@ -150,6 +157,11 @@ function createAllMarkers() {
     markers.map(v => v.addListener('click', () => {
         addInfoWindows(v);
         addMarkerAddr(v.id);
+        var mapCenter = {
+            lng: map.getCenter().lng(), 
+            lat: map.getCenter().lat()
+        };
+        document.querySelector('.mapCenter').value = JSON.stringify(mapCenter);
     }));
 
     // Add a marker clusterer to manage the markers.
@@ -163,7 +175,7 @@ function addInfoWindows(marker) {
     var id = marker.id;
     var rainfall = pigRain[id];
     var contentString
-    if (!pigArea[id]) {
+    if (!pigArea[id] || !rainfall) {
         contentString = '尚無資料';
     } else {
         contentString = ['行政區: ' + pigArea[id].city,

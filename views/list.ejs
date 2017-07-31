@@ -79,6 +79,7 @@
           <p>&ensp;地址</p>
           <input type="text" name='address' id='address'/>
           <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
+          <button class="button getLocation" type="button">取得我的位置</button>
           <br>
           <div class="region">
             <p><span>*</span>地區</p>
@@ -103,6 +104,7 @@
           <p><span>*</span>雨量</p>
           <input required type="number" step=".5" size="10" min="1" max="2147483647" name="threshold" id='threshold' onchange="checkThreshold(this.id)">公釐
           <span id='notice_rain'></span>
+          <input type="hidden" placeholder="mapCenter" class="mapCenter" type="text" name="mapCenter" value="<%= JSON.stringify(mapCenter) %>">
           <input class='button submit' type="submit" value="新增通知">
         </form>
       </div>

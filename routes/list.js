@@ -13,6 +13,7 @@ var TableName = 'pig-notification';
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
+  
   var user = req.session.user || testEmail;
   var params = {
     TableName: TableName,
@@ -53,7 +54,8 @@ router.get('/', function (req, res, next) {
     res.render('list', {
       user,
       items,
-      message: req.flash('message')
+      message: req.flash('message'), 
+      mapCenter: req.session.mapCenter
     });
   }
 });
@@ -62,6 +64,7 @@ router.post('/', function (req, res, next) {
   var user = req.session.user || testEmail;
   var timespan = req.body.timespan;
   var threshold = Number(req.body.threshold);
+  req.session.mapCenter = JSON.parse(req.body.mapCenter);
   if (!isFinite(threshold)) {
     console.log('invalid threshold!');
     res.redirect('/list');
