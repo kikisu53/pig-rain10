@@ -84,11 +84,23 @@ function getMap(locate) {
     createAllMarkers();
 }
 
+function TWD67toWGS84(pos) {
+    // TWD67 橫座標 ＝ TWD97 橫座標 － 828 公尺
+    // TWD67 縱座標 ＝ TWD97 縱座標 ＋ 207 公尺
+    var lngPerMeter = 360 / (6378137 * 2 * Math.PI);
+    var latPerMeter = 180 / (6378137 * 2 * Math.PI);
+    pos.lon = parseFloat(pos.lon) + 828 * lngPerMeter;
+    pos.lat = parseFloat(pos.lat) - 207 * latPerMeter;
+}
+
 function createAllMarkers() {
+    
+
     // createAllMarkers();
     // Add markers to the map: markers = all stop
     markers = [];
     function mark(i, location) {
+        TWD67toWGS84(location);
         return new google.maps.Marker({
             position: { lng: parseFloat(location.lon), lat: parseFloat(location.lat) },
             id: i
@@ -105,7 +117,7 @@ function createAllMarkers() {
     }
 
     // When markers onclick
-   markers.map(v => v.addListener('click', () => {
+    markers.map(v => v.addListener('click', () => {
         addInfoWindows(v);
         var marker = getMarkerById(v.id);
         addMarkerAddr(marker.id);
@@ -120,24 +132,34 @@ function createAllMarkers() {
 
 function addInfoWindows(marker) {
     var id = marker.id;
+    var rainfall = pigRain[id];
     var contentString
     if (!pigArea[id]) {
         contentString = '尚無資料';
     } else {
         contentString = ['行政區: ' + pigArea[id].city,
         '測站: ' + pigArea[id].stop,
-        '位址: ' + pigArea[id].addr
+        '位址: ' + pigArea[id].addr,
+        '10分鐘 : ' + rainfall[0] + ' mm',
+        '1小時 : ' + rainfall[1] + ' mm',
+        '3小時 : ' + rainfall[2] + ' mm',
+        '6小時 : ' + rainfall[3] + ' mm',
+        '12小時 : ' + rainfall[4] + ' mm',
+        '24小時 : ' + rainfall[5] + ' mm',
+        '本日 : ' + rainfall[6] + ' mm',
+        '前一日 : ' + rainfall[7] + ' mm',
+        '前二日 : ' + rainfall[8] + ' mm'
         ].join('<br>');
     }
     infoWindow.setContent(contentString);
-    infoWindow.open(map, v);
+    infoWindow.open(map, marker);
 }
 
-function addMarkerAddr(stopId){
+function addMarkerAddr(stopId) {
     var list = pigArea[stopId];
     var cityId = list.cityId;
     var countyId = list.countyId;
-console.log({cityId, countyId, stopId});
+    console.log({ cityId, countyId, stopId });
     changeOptSelected(city, cityId);
     renderCounty();
     changeOptSelected(county, countyId);
@@ -145,10 +167,10 @@ console.log({cityId, countyId, stopId});
     changeOptSelected(stop, stopId);
 }
 
-function changeOptSelected(selectElement, optionElement){
+function changeOptSelected(selectElement, optionElement) {
     var list = selectElement.childNodes;
-    for(let i in list){
-        list[i].selected = 
-            list[i].value===optionElement ? true : false;
-    } 
+    for (let i in list) {
+        list[i].selected =
+            list[i].value === optionElement ? true : false;
+    }
 }
