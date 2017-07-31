@@ -90,5 +90,3 @@ var list = () => {
   }
   return true;
 }
-
-document.querySelector('.submit').addEventListener('submit', list);

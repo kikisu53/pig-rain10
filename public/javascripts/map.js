@@ -68,7 +68,7 @@ function useCurrentLocation() {
         return getUserLocation()
             .then(data => {
                 if(key) {
-                    // alert('為您定位中');
+                    alert('為您定位中');
                     map.setCenter(data);
                     heremark = new google.maps.Marker({
                         position: data,
