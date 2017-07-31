@@ -104,6 +104,7 @@ function TWD67toWGS84(pos) {
     // TWD67 縱座標 ＝ TWD97 縱座標 ＋ 207 公尺
     var lngPerMeter = 360 / (6378137 * 2 * Math.PI);
     var latPerMeter = 180 / (6378137 * 2 * Math.PI);
+    
     // 100 跟 200 為工人智慧修正量
     pos.lon = parseFloat(pos.lon) + (100 + 828) * lngPerMeter;
     pos.lat = parseFloat(pos.lat) - (200 + 207) * latPerMeter;
