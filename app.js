@@ -59,17 +59,16 @@ var create = require('./lib/create-data');
 var filter = require('./lib/filter');
 var sendNotificationEmails = require('./lib/sendNotificationEmails');
 
-
-setInterval(
-  () => create()
-  .then(
-    obs => filter(obs)
-  )
-  .then( 
-    list => sendNotificationEmails(list)
-  )
-  ,600000
-)
+//setInterval(
+  //() => create()
+  //.then(
+    //obs => filter(obs)
+  //)
+  //.then( 
+    //list => sendNotificationEmails(list)
+ //)
+  //,600000
+//)
 
 
 module.exports = app;

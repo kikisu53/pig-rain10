@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-
+  <script src="/javascripts/map.js"></script>
 </head>
 
 <body>
@@ -16,8 +16,7 @@
     Welcome <span><%= user %></span> <span>▼</span><br>
     <a href='/'><li>service</li></a>
     <a href='/logout'><li>logout</li></a>
-    <a href='/user/changepw'><li>change password</li></a>
-    <a href='/user/searchmap'><li>search map</li></a>     
+    <a href='/user/changepw'><li>change password</li></a>   
   </ul><br>
   <div class='container' align='center'>
     <h1>Pig Weather</h1>
@@ -78,6 +77,9 @@
           <p id='test'></p><br>
           <p>&ensp;地址</p>
           <input type="text" name='address' id='address'/>
+          <select name="addrs" id='addrs' onclick='renderAddrs()'>
+            <option value="">查詢記錄</option>
+          </select>
           <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
           <button class="button getLocation" type="button">取得我的位置</button>
           <br>
@@ -120,7 +122,6 @@
       <h5>About us</h5>
     </div>
   </div>
-  <script src="/javascripts/form.js"></script>
   <script src="/data/pig-city.js"></script>
   <script src="/data/pig-county.js"></script>
   <script src="/data/pig-stop.js"></script>

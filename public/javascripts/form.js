@@ -3,7 +3,9 @@ var checkEmail = (email) => {
   var emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/,
       str = '';
   email = document.getElementById(email).value;
-  (email.search(emailRule)=== -1)? str='email格式錯誤' : str;
+  (email.search(emailRule)=== -1)
+  ? str='email格式錯誤'+'<br>'
+  : str;
   document.getElementById('notice_email').innerHTML=str;
 }
 
@@ -14,21 +16,21 @@ var checkPw = (pw) => {
   if(document.getElementById('password01') !== null) 
     pw1 = document.getElementById('password01').value;
   pw = document.getElementById('password').value;
-  console.log({pw,pw1})
-  (!pw.match(pwRule))? str='密碼格式錯誤' : str;
-  (!pw.match(pw1) && typeof pw1 !== undefined)? str='密碼輸入不同' : str;
+  (!pw.match(pwRule))
+  ? str='密碼格式錯誤'+'<br>' 
+  : str;
+  (pw !== pw1 && typeof pw1 !== undefined)
+  ? str='密碼輸入不同'+'<br>' 
+  : str;
   document.getElementById('notice_pw').innerHTML=str;
   password = pw;
 }
 
 var againPw = (pw1) => {
   pw1 = document.getElementById(pw1).value;
-  if(!pw1.match(password)){
-    document.getElementById('notice_pw').innerHTML='密碼輸入不同';
-  }
-  else {
-    checkPw(pw1);
-  }
+  (!pw1.match(password))
+  ? document.getElementById('notice_pw').innerHTML='密碼輸入不同'+'<br>'
+  : checkPw(pw1); 
 }
 
 var register = () => {

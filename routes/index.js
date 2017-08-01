@@ -39,9 +39,9 @@ router.get('/', function(req, res, next) {
 router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
-  if(req.session && req.session.logined) return res.redirect('/');
-  if(ask==='changepw' || ask==='searchmap') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user});
-  res.render(ask,{err:'', csrfToken: req.csrfToken()})
+  req.session && req.session.logined
+  ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
+  : res.render(ask,{err:'', csrfToken: req.csrfToken()})
 })
 
 router.get('/logout', function(req, res, next) {

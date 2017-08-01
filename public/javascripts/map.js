@@ -42,6 +42,7 @@ var markers;
 var infoWindow;
 var markerDict;
 var heremark;
+var addr = []; //user查詢過的地址存進array
 // safari 10.0 以上版本的geolocation API只接受https連線請求
 
 var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
@@ -196,21 +197,6 @@ function addInfoWindows(marker) {
     infoWindow.open(map, marker);
 }
 
-function codeAddress() {
-    var address = document.getElementById('address').value;
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location,
-            icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
-        });
-      } else {
-        alert('地址轉換失敗，請輸入有效地址');
-      }
-    });
-  }
 
 function addMarkerAddr(stopId){
     var list = pigArea[stopId];
@@ -230,6 +216,50 @@ function changeOptSelected(selectElement, optionElement) {
             list[i].value===optionElement ? true : false;
     } 
 }
+
+function setMapOnAll(map) {
+    for (var i = 0; i < addr.length; i++) 
+        addr[i].setMap(map);
+}
+
+function clearMarkers() {
+    setMapOnAll(null);
+}
+
+function addressExists(address) {
+  let result;  
+  addr.some(function(e) {
+    if(e.address === address) result = e;  
+  }); 
+  return result;
+}
+
+function codeAddress() {
+    var address = document.getElementById('address').value;
+    if(addr.length !== 0) clearMarkers();
+    if (addressExists(address)) {
+            var marker = addressExists(address);
+            map.setCenter(marker['position']);
+            marker.setMap(map);
+            return false;
+    }
+    geocoder.geocode( { 'address': address }, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            //size: new google.maps.size(20,30),
+            map: map,
+            position: results[0].geometry.location,
+            icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
+        });
+        marker['address']=address;
+        addr.push(marker);
+      } else {
+        alert('地址轉換失敗，請輸入有效地址');
+      }
+    });
+  }
+
 
 function findGPS(addr){
     geocoder = new google.maps.Geocoder();

@@ -2,6 +2,7 @@ var city = document.querySelector('#city');
 var county = document.querySelector('#county');
 var stop = document.querySelector('#stop');
 var region = document.querySelector('.region');
+var addrs = document.querySelector('#addrs');
 renderCity();
 renderTimespan();
 city.addEventListener('change', () => {
@@ -57,6 +58,23 @@ function renderTimespan() {
   }
 }
 
+function renderAddrs() {
+  addrs.innerHTML = "";
+  addrs.innerHTML = "<option value=''>查詢記錄</option>";
+  for(var i=0;i<=addr.length-1;i++){
+    let option = document.createElement('option')
+    option.text = addr[i]['address'];
+    option.setAttribute('value', addr[i]['address']);
+    addrs.add(option);
+  }
+}
+
+addrs.addEventListener('change', () => {
+  var addrs = document.getElementById('addrs')
+  address.value = addrs.value
+  codeAddress(addrs.value)
+})
+
 function removeAllChild(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -66,9 +84,11 @@ function removeAllChild(parent) {
 
 //list_form
 var checkThreshold = (threshold) => {
-  var rainRule = /^[0-9]+(\.[0-9]{0,1})?$/;
+  var rainRule = /^[0-9]+(\.[0-9]{0,1})?$/, str='';
   threshold = document.getElementById(threshold).value;
-  (!rainRule.test(threshold) || !isFinite(threshold))? str='雨量設定有誤' : str='';
+  (!rainRule.test(threshold) || !isFinite(threshold))
+  ? str='雨量設定有誤' 
+  : str;
   document.getElementById('notice_rain').innerHTML=str;
 }
 
@@ -90,3 +110,4 @@ var list = () => {
   }
   return true;
 }
+
