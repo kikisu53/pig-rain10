@@ -57,6 +57,7 @@ router.get('/', function (req, res, next) {
     });
   }
 });
+
 router.post('/', function (req, res, next) {
   var areaId = req.body.stop;
   var user = req.session.user || testEmail;

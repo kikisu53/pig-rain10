@@ -18,6 +18,8 @@
 // });
 
 function showStationById(id) {
+    key = false;
+    if(map===undefined) return initMap(id); //預防地圖未產生前，使用者就點選頁面上功能（地圖為非同步）
     console.log(id);
     var marker = getMarkerById(id);
     var pos = {
@@ -39,24 +41,39 @@ var map;
 var markers;
 var infoWindow;
 var markerDict;
+var heremark;
+var addr = []; //user查詢過的地址存進array
 // safari 10.0 以上版本的geolocation API只接受https連線請求
-var key = true;
-function initMap() {
+
+var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
+function initMap(stopId) {
     geocoder = new google.maps.Geocoder();
-    var stopId = stop.value;
-    var locate = { err: '定位失敗，使用系統預設值', lat: 24.052171, lng: 120.892433 };
+    var locate = { lat: 24.052171, lng: 120.892433 };
+
     if (stopId) {
+        key = false;
+        console.log(key)
         lat = parseFloat(pigPos[stopId].lat);
         lng = parseFloat(pigPos[stopId].lon);
         locate = { lat: lat, lng: lng };
         return getMap(locate);
     }
+    getMap(locate);
     if (navigator.geolocation) {
         return getUserLocation()
-            .then(data => key ? getMap(data) : '')
-            .catch(() => key ? getMap(locate) : '')
+            .then(data => {
+                if(key) {
+                    alert('為您定位中');
+                    map.setCenter(data);
+                    heremark = new google.maps.Marker({
+                        position: data,
+                     //   icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png',
+                        map: map
+                    });
+                }
+            })
+            .catch(() => key ? alert('無法偵測到您到位置') : '')
     }
-    getMap(locate);
 }
 
 function getUserLocation() {
@@ -74,9 +91,7 @@ function getUserLocation() {
 }
 
 function getMap(locate) {
-    if (locate.err) alert(locate.err);
     //Create google map
-
     map = new google.maps.Map(document.querySelector('#map'), {
         zoom: 14,
         center: { lat: locate.lat, lng: locate.lng }
@@ -85,13 +100,31 @@ function getMap(locate) {
     createAllMarkers();
 }
 
+function TWD67toWGS84(pos) {
+    // TWD67 橫座標 ＝ TWD97 橫座標 － 828 公尺
+    // TWD67 縱座標 ＝ TWD97 縱座標 ＋ 207 公尺
+    var lngPerMeter = 360 / (6378137 * 2 * Math.PI);
+    var latPerMeter = 180 / (6378137 * 2 * Math.PI);
+    
+    // 100 跟 200 為工人智慧修正量
+    pos.lon = parseFloat(pos.lon) + (100 + 828) * lngPerMeter;
+    pos.lat = parseFloat(pos.lat) - (200 + 207) * latPerMeter;
+    return pos;
+}
+
 function createAllMarkers() {
+    
+
     // createAllMarkers();
     // Add markers to the map: markers = all stop
     markers = [];
-    function mark(i, location) {
+    function mark(i, location, type) {
+        location = TWD67toWGS84(location);
+        pos = type==='noGPS'
+        ? location
+        : { lng: parseFloat(location.lon), lat: parseFloat(location.lat) };
         return new google.maps.Marker({
-            position: { lng: parseFloat(location.lon), lat: parseFloat(location.lat) },
+            position: pos,
             id: i
         });
     }
@@ -100,16 +133,24 @@ function createAllMarkers() {
     markerDict = {};
 
     // create all markers
-    for (let i in pigPos) {
+    for (let i in pigArea) {
+        if(pigPos[i]===undefined) {
+            console.log(i)
+            var data = pigArea[i];
+            findGPS(data.city+data.addr).then( GPS => {
+                markerDict[i] = mark(i, GPS, 'noGPS');
+                markers.push(markerDict[i]);
+            });
+            continue;
+        }
         markerDict[i] = mark(i, pigPos[i]);
         markers.push(markerDict[i]);
     }
 
     // When markers onclick
-   markers.map(v => v.addListener('click', () => {
+    markers.map(v => v.addListener('click', () => {
         addInfoWindows(v);
-        var marker = getMarkerById(v.id);
-        addMarkerAddr(marker.id);
+        addMarkerAddr(v.id);
     }));
 
     // Add a marker clusterer to manage the markers.
@@ -121,25 +162,34 @@ function createAllMarkers() {
 
 function addInfoWindows(marker) {
     var id = marker.id;
+    var rainfall = pigRain[id];
     var contentString
     if (!pigArea[id]) {
         contentString = '尚無資料';
     } else {
         contentString = ['行政區: ' + pigArea[id].city,
         '測站: ' + pigArea[id].stop,
-        '位址: ' + pigArea[id].addr
+        '位址: ' + pigArea[id].addr,
+        '10分鐘 : ' + rainfall[0] + ' mm',
+        '1小時 : ' + rainfall[1] + ' mm',
+        '3小時 : ' + rainfall[2] + ' mm',
+        '6小時 : ' + rainfall[3] + ' mm',
+        '12小時 : ' + rainfall[4] + ' mm',
+        '24小時 : ' + rainfall[5] + ' mm',
+        '本日 : ' + rainfall[6] + ' mm',
+        '前一日 : ' + rainfall[7] + ' mm',
+        '前二日 : ' + rainfall[8] + ' mm'
         ].join('<br>');
     }
     infoWindow.setContent(contentString);
-
     infoWindow.open(map, marker);
 }
+
 
 function addMarkerAddr(stopId){
     var list = pigArea[stopId];
     var cityId = list.cityId;
     var countyId = list.countyId;
-console.log({cityId, countyId, stopId});
     changeOptSelected(city, cityId);
     renderCounty();
     changeOptSelected(county, countyId);
@@ -147,7 +197,7 @@ console.log({cityId, countyId, stopId});
     changeOptSelected(stop, stopId);
 }
 
-function changeOptSelected(selectElement, optionElement){
+function changeOptSelected(selectElement, optionElement) {
     var list = selectElement.childNodes;
     for(let i in list){
         list[i].selected = 
@@ -155,19 +205,58 @@ function changeOptSelected(selectElement, optionElement){
     } 
 }
 
+function setMapOnAll(map) {
+    for (var i = 0; i < addr.length; i++) 
+        addr[i].setMap(map);
+}
+
+function clearMarkers() {
+    setMapOnAll(null);
+}
+
+function addressExists(address) {
+  let result;  
+  addr.some(function(e) {
+    if(e.address === address) result = e;  
+  }); 
+  return result;
+}
+
 function codeAddress() {
     var address = document.getElementById('address').value;
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == 'OK') {
+    if(addr.length !== 0) clearMarkers();
+    if (addressExists(address)) {
+            var marker = addressExists(address);
+            map.setCenter(marker['position']);
+            marker.setMap(map);
+            return false;
+    }
+    geocoder.geocode( { 'address': address }, function(results, status) {
+      if (status === 'OK') {
         map.setCenter(results[0].geometry.location);
         var marker = new google.maps.Marker({
+            //size: new google.maps.size(20,30),
             map: map,
             position: results[0].geometry.location,
             icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
         });
+        marker['address']=address;
+        addr.push(marker);
       } else {
         alert('地址轉換失敗，請輸入有效地址');
       }
     });
   }
+
+
+function findGPS(addr){
+    geocoder = new google.maps.Geocoder();
+    return new Promise((res,rej) => 
+        geocoder.geocode( { 'address': addr }, function(results, status) {
+            if (status == 'OK') res(results[0].geometry.location);
+            console.log(status);
+        })
+    );
+
+}
 

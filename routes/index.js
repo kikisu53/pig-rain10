@@ -39,9 +39,8 @@ router.get('/', function(req, res, next) {
 router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
-  //if(ask==='changepw') return res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user});
-  ask === 'changepw'
-  ? req.session && req.session.logined ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
+  req.session && req.session.logined
+  ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
 })
 

@@ -66,7 +66,7 @@ var sendNotificationEmails = require('./lib/sendNotificationEmails');
   //)
   //.then( 
     //list => sendNotificationEmails(list)
-  //)
+ //)
   //,600000
 //)
 
