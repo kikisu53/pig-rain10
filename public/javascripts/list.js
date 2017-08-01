@@ -16,13 +16,8 @@ region.addEventListener('change', () => {
   console.log('hi');
   showStationById(stop.value);
 })
-// <% if (messages.areaId.length > 0) { %>
-//   var repeatNotification = document.querySelector('.<%= messages.areaId %>');
-//   repeatNotification.classList.add('flash');
-//   var flash = document.createElement('p')
-//   flash.textContent = '<%= messages.info %>';
-//   repeatNotification.appendChild(flash);
-// <% } %>
+
+
 function renderCity() {
   for (let area in pigCity) {
     let option = document.createElement('option');
@@ -116,4 +111,3 @@ var list = () => {
   return true;
 }
 
-document.querySelector('.submit').addEventListener('submit', list); //?
