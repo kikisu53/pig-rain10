@@ -2,7 +2,7 @@ var city = document.querySelector('#city');
 var county = document.querySelector('#county');
 var stop = document.querySelector('#stop');
 var region = document.querySelector('.region');
-var addrs = document.querySelector('#addrs');
+
 renderCity();
 renderTimespan();
 city.addEventListener('change', () => {
@@ -16,13 +16,7 @@ region.addEventListener('change', () => {
   console.log('hi');
   showStationById(stop.value);
 })
-// <% if (messages.areaId.length > 0) { %>
-//   var repeatNotification = document.querySelector('.<%= messages.areaId %>');
-//   repeatNotification.classList.add('flash');
-//   var flash = document.createElement('p')
-//   flash.textContent = '<%= messages.info %>';
-//   repeatNotification.appendChild(flash);
-// <% } %>
+
 function renderCity() {
   for (let area in pigCity) {
     let option = document.createElement('option');
@@ -63,21 +57,10 @@ function renderTimespan() {
   }
 }
 
-function renderAddrs() {
-  addrs.innerHTML = "";
-  addrs.innerHTML = "<option value=''>查詢記錄</option>";
-  for(var i=0;i<=addr.length-1;i++){
-    let option = document.createElement('option')
-    option.text = addr[i]['address'];
-    option.setAttribute('value', addr[i]['address']);
-    addrs.add(option);
-  }
-}
-
 addrs.addEventListener('change', () => {
-  var addrs = document.getElementById('addrs')
-  address.value = addrs.value
-  codeAddress(addrs.value)
+  var addrs = document.getElementById('addrs');
+  address.value = addrs.value;
+  codeAddress(addrs.value);
 })
 
 function removeAllChild(parent) {
@@ -85,7 +68,6 @@ function removeAllChild(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
-
 
 //list_form
 var checkThreshold = (threshold) => {
@@ -116,4 +98,3 @@ var list = () => {
   return true;
 }
 
-document.querySelector('.submit').addEventListener('submit', list); //?

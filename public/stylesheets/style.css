@@ -3,6 +3,10 @@ body {
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+div {
+  position: relative;
+}
+
 ul {
   width: 10%;
   position: absolute;
@@ -74,20 +78,23 @@ li:hover {
     margin: 5px 5px 5px 15px;
 }
 
-.rightside {
+.leftside {
   width: 40%;
   float: left;
   margin: 0px 2.5% 10px 2.5%;
 }
 
-.lefttside {
+.rightside {
   width: 50%;
-  margin: 50px 2.5% 10px 2.5%;
+  float: right;
+  margin: 0px 2.5% 10px 2.5%;
 }
 
 #map {
-  width: auto;
-  height: 500px;
+  width: 100%;
+  min-height: 500px;
+  height: 100%;
+  margin: 50px 2.5% 10px 2.5%;
   border-radius: 5px;
   border: #2F4F4F 0.2px solid;
  }
@@ -99,7 +106,6 @@ li:hover {
   border-radius: 10px;
   background-color: #2F4F4F;
   padding: 5px 0px 5px 0px;
-  
   color: #FFF;
 }
 
