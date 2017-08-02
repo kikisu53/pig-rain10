@@ -78,36 +78,20 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-<<<<<<< HEAD
-var create = require('./lib/create-data');
-var filter = require('./lib/filter');
-var sendNotificationEmails = require('./lib/sendNotificationEmails');
-
-/*setInterval(
-  () => create()
-=======
 // setInterval(
-//   () => 
-  create()
->>>>>>> update rain data, when rain data change
-  .then(
-    obs => {
-      console.log('obs');
-      raindata.emit('create');
-      return filter(obs);
-    }
-  )
-  .then( 
-    list => sendNotificationEmails(list)
-<<<<<<< HEAD
- )
-  ,6000
-)*/
-
-=======
-  )
-//   ,60000
+//   () => create()
+//   .then(
+//     obs => {
+//       console.log('obs');
+//       raindata.emit('create');
+//       return filter(obs);
+//     }
+//   )
+//   .then( 
+//     list => sendNotificationEmails(list)
+//  )
+//   ,600000
 // )
->>>>>>> update rain data, when rain data change
+
 
 module.exports = app;

@@ -82,7 +82,6 @@ function useCurrentLocation() {
     }
 }
 
-
 function getUserLocation() {
     return new Promise((res, rej) =>
         navigator.geolocation.getCurrentPosition(
@@ -120,8 +119,8 @@ function TWD67toWGS84(pos) {
 }
 
 function createAllMarkers() {
-    
 
+    
     // createAllMarkers();
     // Add markers to the map: markers = all stop
     markers = [];
@@ -175,6 +174,7 @@ function createAllMarkers() {
 function addInfoWindows(marker) {
     var id = marker.id;
     var rainfall = pigRain[id];
+    console.log(rainfall)
     var contentString
     if (!pigArea[id] || !rainfall) {
         contentString = '尚無資料';
@@ -265,7 +265,6 @@ function codeAddress() {
     });
   }
 
-
 function findGPS(addr){
     geocoder = new google.maps.Geocoder();
     return new Promise((res,rej) => 
@@ -277,3 +276,13 @@ function findGPS(addr){
 
 }
 
+//update rain data, when rain data change
+function sse(){
+    if(typeof(EventSource) !== "undefined") {
+        var source = new EventSource("/getdata/sse");
+        source.onmessage = function(event) {
+            pigRain = JSON.parse(event.data);
+        };
+    }
+}
+sse();
