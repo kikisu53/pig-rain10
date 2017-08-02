@@ -236,6 +236,7 @@ function addressExists(address) {
 
 function codeAddress() {
     var address = document.getElementById('address').value;
+    var addrs = document.querySelector('#addrs');
     if(addr.length !== 0) clearMarkers();
     if (addressExists(address)) {
             var marker = addressExists(address);
@@ -253,7 +254,11 @@ function codeAddress() {
             icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
         });
         marker['address']=address;
-        addr.push(marker);
+        let option = document.createElement('option')
+        option.text = address;
+        option.setAttribute('value', address);
+        addrs.add(option); //select add
+        addr.push(marker); //store
       } else {
         alert('地址轉換失敗，請輸入有效地址');
       }

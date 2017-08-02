@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <script src="/javascripts/map.js"></script>
 </head>
 
 <body>
@@ -22,7 +21,7 @@
     <h1>Pig Weather</h1>
     <h2>Let you know where rain and when rain</h2>
     <div class='contentmap' align='left'>
-      <div class='rightside'>
+      <div class='leftside'>
       <% if (message.length > 0) { %>
       <div class="box flash">
         <p>
@@ -30,6 +29,7 @@
         </p>
       </div>
       <% } %>
+      <% if(items.length !== 0) { %>
       <div class='topbar'>
         <div style="width:35%">
           地區
@@ -41,6 +41,12 @@
           間隔
         </div>
       </div>
+      <% } %>
+      <% if(items.length === 0) { %>
+        <div class='topbar'>
+          <p>尚未新增任何下雨通知，請使用此服務。</p>
+        </div>
+      <% } %>
       <% items.forEach(function(item) { %>
       <div class="box <%= item.addr.id %>">
         <div style="width:35%;text-align: left;">
@@ -72,17 +78,17 @@
       <% }) %>
       <div class='createbox' align='left'>
         <h3 align='center'>新增下雨通知</h3>
-        <form action="/list" method="post" onSubmit="return list()">
-          <p><span id='notice_list'></span></p><br>
-          <p id='test'></p><br>
-          <p>&ensp;地址</p>
+        <p>&ensp;地址</p>
           <input type="text" name='address' id='address'/>
-          <select name="addrs" id='addrs' onclick='renderAddrs()'>
+          <select name="addrs" id='addrs'>
             <option value="">查詢記錄</option>
           </select>
           <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
           <button class="button getLocation" type="button">取得我的位置</button>
           <br>
+        <form action="/list" method="post" onSubmit="return list()">
+          <p><span id='notice_list'></span></p><br>
+          
           <div class="region">
             <p><span>*</span>地區</p>
             <select required name="city" id='city'>
@@ -111,8 +117,8 @@
         </form>
       </div>
     </div>
-    <div class='leftside'>
-      <div id='map'> 載入中...</div>
+    <div class='rightside'>
+      <div id='map'>載入中...</div>
     </div>
     </div>
     <div class='footer'>
@@ -128,6 +134,7 @@
   <script src="/data/pig-timespan.js"></script>
   <script src="/javascripts/list.js"></script>
   <script src="/data/pig-area.js"></script>
+  <script src="/javascripts/map.js"></script>
   <% include ../views/partials/map %>
 </body>
 
