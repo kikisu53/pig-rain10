@@ -82,16 +82,17 @@ app.use(function(err, req, res, next) {
 //   () => create()
 //   .then(
 //     obs => {
-//       console.log('obs');
 //       raindata.emit('create');
 //       return filter(obs);
 //     }
 //   )
-//   .then( 
-//     list => sendNotificationEmails(list)
+//    .then( result => {
+//      var str = result.filter(x=>x).join();
+//      var list = JSON.parse('['+str+']');
+//      sendNotificationEmails(list);
+//     }
+//   )
+//    ,600000
 //  )
-//   ,600000
-// )
-
 
 module.exports = app;
