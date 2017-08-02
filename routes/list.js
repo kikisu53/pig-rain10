@@ -13,7 +13,7 @@ var TableName = 'pig-notification';
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-  
+
   var user = req.session.user || testEmail;
   var params = {
     TableName: TableName,
@@ -54,7 +54,7 @@ router.get('/', function (req, res, next) {
     res.render('list', {
       user,
       items,
-      message: req.flash('message'), 
+      message: req.flash('message'),
       mapCenter: req.session.mapCenter
     });
   }
@@ -127,6 +127,56 @@ router.get('/delete/:area_id', function (req, res, next) {
       res.redirect('/list');
     }
   });
-})
+});
+router.get('/delete', function (req, res) {
+  var user = req.session.user || testEmail;
+  var params = {
+    TableName: TableName,
+    FilterExpression: '#user = :user',
+    ExpressionAttributeNames: {
+      '#user': 'user'
+    },
+    ExpressionAttributeValues: {
+      ':user': user
+    }
+  };
+  docClient.scan(params, onScan);
+  function onScan(err, data) {
+    if (err) {
+      console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+      return;
+    }
+    console.log("Scan succeeded.");
+    console.log(data.Items);
+
+    // delete-begin
+    var deleteRequests = data.Items.map(function (item) {
+      return {
+        DeleteRequest: {
+          Key: {
+            'area-id': item['area-id'],
+            user
+          }
+        }
+      }
+    });
+    var params = {
+      RequestItems: {
+        'pig-notification': deleteRequests
+      }
+    };
+    docClient.batchWrite(params, function (err, data) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log(data);
+        var deleteMessage = 'Delete success'
+        req.flash('message', deleteMessage);
+        res.redirect('/list');
+      };
+    });
+  }
+});
 
 module.exports = router;
