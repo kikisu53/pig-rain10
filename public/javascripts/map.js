@@ -174,7 +174,6 @@ function createAllMarkers() {
 function addInfoWindows(marker) {
     var id = marker.id;
     var rainfall = pigRain[id];
-    console.log(rainfall)
     var contentString
     if (!pigArea[id] || !rainfall) {
         contentString = '尚無資料';
