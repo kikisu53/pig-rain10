@@ -30,7 +30,7 @@ function showStationById(id) {
     map.setZoom(15);
     map.setCenter(pos);
     console.log(map.getCenter())
-    setTimeout(() => google.maps.event.trigger(marker, 'click'), 1000);
+    setTimeout(() => google.maps.event.trigger(marker, 'click'), 500);
 }
 
 function getMarkerById(id) {
