@@ -78,21 +78,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// setInterval(
-//   () => create()
-//   .then(
-//     obs => {
-//       raindata.emit('create');
-//       return filter(obs);
-//     }
-//   )
-//    .then( result => {
-//      var str = result.filter(x=>x).join();
-//      var list = JSON.parse('['+str+']');
-//      sendNotificationEmails(list);
-//     }
-//   )
-//    ,600000
-//  )
+// 先觸發一次，這樣不用先等10分鐘
+sendEmail();
+setInterval(sendEmail, 600000)
+
+function sendEmail() {
+   create().then(obs => {
+      raindata.emit('create');
+      return filter(obs);
+    }).then( result => {
+     var str = result.filter(x=>x).join();
+     var list = JSON.parse('['+str+']');
+     sendNotificationEmails(list);
+    }).catch(err => console.log(err));
+}
 
 module.exports = app;
