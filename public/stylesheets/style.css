@@ -1,10 +1,14 @@
 body {
   color: 	#2F4F4F;
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:	#F5F5F5;
+  margin: 0px;
 }
 
-div {
-  position: relative;
+.header {
+  width: 100%;
+  height: 60px;
+  background-color: #2F4F4F;
 }
 
 ul {
@@ -12,6 +16,8 @@ ul {
   position: absolute;
   margin-left: 70%;
   z-index: 1;
+  color: #F5F5F5;
+  font-size: 12.5px;   
 }
 
 li {
@@ -48,9 +54,6 @@ li:hover {
 }
 
 .container {
-  background-image: url("http://pngimages.net/sites/default/files/rain-png-image-24401.png");
-  background-repeat: repeat-x;
-  background-position: -30px 100px;
   width: 100%;
   position: absolute;
   z-index: 0;
@@ -59,13 +62,13 @@ li:hover {
 .contentmap{
   width: 85%;
   min-height: 450px;
-  margin-top: 2%; 
+  margin-top: 3%; 
 }
 
 .content{
   width: 35%;
   min-height: 450px;
-  margin-top: 2%; 
+  margin-top: 3%; 
 }
 
 .content p {
@@ -81,29 +84,31 @@ li:hover {
 .leftside {
   width: 40%;
   float: left;
-  margin: 0px 2.5% 10px 2.5%;
+  margin: 0px .5% 10px 4%;
 }
 
 .rightside {
   width: 50%;
   float: right;
-  margin: 0px 2.5% 10px 2.5%;
+  margin: 0px 4% 10px .5%;
+  text-align: center;
+  font-size: 14px;
 }
 
 #map {
   width: 100%;
   min-height: 500px;
   height: 100%;
-  margin: 50px 2.5% 10px 2.5%;
   border-radius: 5px;
   border: #2F4F4F 0.2px solid;
+  background-color: #FFF;
  }
 
 .topbar {
   width: 100%;
   height: 30px;
   position: relative;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #2F4F4F;
   padding: 5px 0px 5px 0px;
   color: #FFF;
@@ -119,7 +124,7 @@ li:hover {
 .box {
   width: 100%;
   position: relative;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #FFF;
   margin: 5px 0px 5px 0px;
   padding: 5px 0px 5px 0px;
@@ -143,7 +148,7 @@ li:hover {
 
 .button {
   border: #2F4F4F 0.2px solid;
-  border-radius: 5px;
+  border-radius: 4px;
   margin: 5px;
   padding: 5px;
   background-color: #2F4F4F;
@@ -167,7 +172,7 @@ li:hover {
 .createbox {
   width: 100%;
   position: relative;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #FFF;
   padding: 5px 0px 5px 0px;
   box-shadow: 0.2px 0.2px 2px #2F4F4F;
@@ -197,8 +202,7 @@ input:focus {
   width: 100%;
   position: relative;
   padding-top: 50px;
-  top:  90%;
-  min-height: 100px;
+  min-height: 60px;
   color: #2F4F4F;
   clear: both;
 }
@@ -230,12 +234,17 @@ a {
   .content{
     width: 95%;
   }
-  .rightside{
-    width: 100%;
-  }
   .leftside{
     width: 100%;
+    float: none;
+    margin: auto 0;
   }
+  .rightside{
+    width: 100%;
+    float: none;
+    margin: 10px 0;
+  }
+
 }
 
 .flash {

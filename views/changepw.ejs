@@ -12,21 +12,20 @@
     </script>
   </head>
   <body>
-    <ul align='left'>
-    Welcome <span><%= user %></span> <span>▼</span><br>
-    <a href='/'><li>service</li></a>
-    <a href='/logout'><li>logout</li></a>
-    <a href='/user/changepw'><li>change password</li></a>
-  </ul>
+    <div class='header'>
+      <ul align='left'>
+        Welcome <span><%= user %></span> <span>▼</span><br>
+        <a href='/'><li>service</li></a>
+        <a href='/logout'><li>logout</li></a>
+        <a href='/user/changepw'><li>change password</li></a>   
+      </ul><br>
+    </div>
     <div class='container' align='center'>
-      <div class='header'>
-        <h1>Pig Weather</h1>
-        <h2>Let you know where rain and when rain</h2>
-      </div>
+      <h1>Pig Weather</h1>
+      <h2>Let you know where rain and when rain</h2>
       <div class='content'>
         <div class='box'>
           <h3>修改密碼</h3>
-
           <form action="/user/changepw" onsubmit="return register()" method ="post">
             <p>帳號&nbsp;<input id='user' type="text" name="user" value='email@abc.com' onchange="checkEmail(this.id)"
               onblur="if (this.value == '') {this.value = 'email@abc.com';}"
