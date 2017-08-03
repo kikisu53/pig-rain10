@@ -6,17 +6,20 @@
   <meta name="viewport" content="width=device-width" />
   <title>Pig Weather clock</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
+  
 </head>
 
 <body>
   <!--<iframe src="https://www.google.com/maps/d/embed?mid=1R_bp6jQg8PJACRINBwa-mK0TRUE&hl=en_US" width="640" height="480"></iframe>
   <iframe src="http://www.cwb.gov.tw//V7/google/46706_map.htm" frameborder="0" width="1000" height="800"></iframe>-->
-  <ul align='left'>
-    Welcome <span><%= user %></span> <span>▼</span><br>
-    <a href='/'><li>service</li></a>
-    <a href='/logout'><li>logout</li></a>
-    <a href='/user/changepw'><li>change password</li></a>   
-  </ul><br>
+  <div class='header'>
+    <ul align='left'>
+      Welcome <span><%= user %></span> <span>▼</span><br>
+      <a href='/'><li>service</li></a>
+      <a href='/logout'><li>logout</li></a>
+      <a href='/user/changepw'><li>change password</li></a>   
+    </ul><br>
+  </div>
   <div class='container' align='center'>
     <h1>Pig Weather</h1>
     <h2>Let you know where rain and when rain</h2>
@@ -83,9 +86,11 @@
           <select name="addrs" id='addrs'>
             <option value="">查詢記錄</option>
           </select>
-          <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
-          <button class="button getLocation" type="button">取得我的位置</button>
           <br>
+          <p>&emsp;&emsp;&ensp;</P>
+          <button class='button submit' type="button" onclick="codeAddress()">查詢附近觀測站</button>
+          <button class='button clearRecords' type="button">刪除查詢記錄</button>
+          <button class="button getLocation" type="button">取得我的位置</button><br>
         <form action="/list" method="post" onSubmit="return list()">
           <p><span id='notice_list'></span></p><br>
           
@@ -118,7 +123,7 @@
       </div>
     </div>
     <div class='rightside'>
-      <div id='map'>載入中...</div>
+      <div id='map'>地圖載入中...</div>
     </div>
     </div>
     <div class='footer'>
