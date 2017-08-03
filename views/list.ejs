@@ -78,7 +78,7 @@
           <p class='button button-delete'>刪除通知</p>
         </a>
         <a>
-          <p class='button' onclick='showStationById("<%= item.addr.id %>")'>查看位置</p>
+          <p class='button' onclick='showStopById("<%= item.addr.id %>")'>查看位置</p>
         </a>
         </div>
       </div>
@@ -145,7 +145,6 @@
   <script src="/data/pig-area.js"></script>
   <script src="/javascripts/map.js"></script>
   <% include ../views/partials/map %>
-  <script src="/javascripts/sse.js"></script>
 </body>
 
 </html>
