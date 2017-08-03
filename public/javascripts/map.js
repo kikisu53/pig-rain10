@@ -256,7 +256,7 @@ function codeAddress() {
         var marker = new google.maps.Marker({
             map: map,
             position: results[0].geometry.location,
-            icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
+            icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png'
         });
         marker['address']=address;
         addrArr.push(marker); //store all records
