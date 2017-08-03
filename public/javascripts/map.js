@@ -42,7 +42,7 @@ var markers;
 var infoWindow;
 var markerDict;
 var heremark;
-var addr = []; //user查詢過的地址存進array
+var addrArr = []; //user查詢過的地址存進array
 // safari 10.0 以上版本的geolocation API只接受https連線請求
 
 var key = true; //避免使用者點選頁面功能後，網頁才偵測出使用者的GPS
@@ -217,8 +217,8 @@ function changeOptSelected(selectElement, optionElement) {
 }
 
 function setMapOnAll(map) {
-    for (var i = 0; i < addr.length; i++) 
-        addr[i].setMap(map);
+    for (let i = 0; i < addrArr.length; i++) 
+        addrArr[i].setMap(map);
 }
 
 function clearMarkers() {
@@ -227,37 +227,48 @@ function clearMarkers() {
 
 function addressExists(address) {
   let result;  
-  addr.some(function(e) {
+  addrArr.some(function(e) {
     if(e.address === address) result = e;  
-  }); 
+  });
   return result;
+}
+
+function storageExists(address) {
+    if(address in localStorage)
+        return true 
+    return false
 }
 
 function codeAddress() {
     var address = document.getElementById('address').value;
     var addrs = document.querySelector('#addrs');
-    if(addr.length !== 0) clearMarkers();
-    if (addressExists(address)) {
-            var marker = addressExists(address);
-            map.setCenter(marker['position']);
-            marker.setMap(map);
-            return false;
+    if(addrArr.length !== 0) clearMarkers();
+    if (addressExists(address) && storageExists(address)) {
+        var marker = addressExists(address);
+        console.log(marker)
+        map.setCenter(marker['position']);
+        marker.setMap(map);
+        return false;
     }
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status === 'OK') {
         map.setCenter(results[0].geometry.location);
         var marker = new google.maps.Marker({
-            //size: new google.maps.size(20,30),
             map: map,
             position: results[0].geometry.location,
-            icon: 'https://www.spreadshirt.it/image-server/v1/designs/117102917,width=178,height=178/i-am-here.png'
+            icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png'
         });
         marker['address']=address;
-        let option = document.createElement('option')
-        option.text = address;
-        option.setAttribute('value', address);
-        addrs.add(option); //select add
-        addr.push(marker); //store
+        addrArr.push(marker); //store all records
+        if(!storageExists(address)) {
+            localStorage[address] = address;
+            console.log(localStorage[address])
+            console.log(addrArr)
+            let option = document.createElement('option')
+            option.text = address;
+            option.setAttribute('value', address);
+            addrs.add(option); //select add
+        }
       } else {
         alert('地址轉換失敗，請輸入有效地址');
       }

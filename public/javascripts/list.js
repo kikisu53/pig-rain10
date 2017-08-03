@@ -2,7 +2,7 @@ var city = document.querySelector('#city');
 var county = document.querySelector('#county');
 var stop = document.querySelector('#stop');
 var region = document.querySelector('.region');
-
+renderAddr();
 renderCity();
 renderTimespan();
 city.addEventListener('change', () => {
@@ -64,8 +64,18 @@ function renderTimespan() {
   }
 }
 
+function renderAddr() {
+  for (let addr in localStorage) {
+    let option = document.createElement('option');
+    option.text = localStorage[addr];
+    option.setAttribute('value', addr);
+    addrs.add(option);
+  }
+}
+
 addrs.addEventListener('change', () => {
   var addrs = document.getElementById('addrs');
+  if(addrs.value === '') return false;
   address.value = addrs.value;
   codeAddress(addrs.value);
 })
@@ -105,3 +115,9 @@ var list = () => {
   return true;
 }
 
+//clear localStorage 
+document.querySelector('.clearRecords').addEventListener('click', function(){
+  window.localStorage.clear();
+  document.getElementById('addrs').innerHTML='<option value="">查詢記錄</option>';
+  alert('查詢記錄已刪除');
+})
