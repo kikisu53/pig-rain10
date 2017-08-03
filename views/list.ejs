@@ -44,6 +44,7 @@
           間隔
         </div>
       </div>
+      <a href="/list/delete"><button>刪除全部</button></a>
       <% } %>
       <% if(items.length === 0) { %>
         <div class='topbar'>
@@ -141,6 +142,7 @@
   <script src="/data/pig-area.js"></script>
   <script src="/javascripts/map.js"></script>
   <% include ../views/partials/map %>
+  <script src="/javascripts/sse.js"></script>
 </body>
 
 </html>

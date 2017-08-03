@@ -17,6 +17,13 @@ region.addEventListener('change', () => {
   showStationById(stop.value);
 })
 
+var searchBar = document.querySelector('#address');
+searchBar.addEventListener('keydown', function(e) {
+  if (e.code === 'Enter') {
+    codeAddress();
+  }
+});
+
 function renderCity() {
   for (let area in pigCity) {
     let option = document.createElement('option');

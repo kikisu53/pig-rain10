@@ -7,10 +7,18 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session')
 var csurf = require('csurf')
 var flash = require('connect-flash');
+// for client, the raindata change => clinet's raindata change
+var EventEmitter = require('events').EventEmitter,
+    raindata = new EventEmitter();
 
 var index = require('./routes/index');
 var list = require('./routes/list');
-var connect = require('./lib/connect')
+var connect = require('./lib/connect'); //check if the table is exist in dynamodb, if not, crate one.
+var create = require('./lib/create-data'); //get rain data, and save to ./public/data/pig-rain
+var rain = require('./public/data/pig-rain');
+var filter = require('./lib/filter'); //filter which to mail, using rain data
+var sendNotificationEmails = require('./lib/sendNotificationEmails'); // mail to which filter
+
 var app = express();
 
 function loginCheck(req, res, next) {
@@ -36,6 +44,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/list', loginCheck);
 app.use('/list', list);
+app.use('/getdata/sse',(req,res) => {
+  res.set({
+    'content-type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'charset': "UTF-8"
+  });
+  var timer = raindata.on('create', () => {
+    res.write('data:'+JSON.stringify(rain)+'\n\n')
+    // !!! this is the important part
+    res.flushHeaders() //flush is deprecated. Use flushHeaders instead.
+  })
+  res.on('close', function () {
+      clearInterval(timer)
+  })
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,20 +78,21 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var create = require('./lib/create-data');
-var filter = require('./lib/filter');
-var sendNotificationEmails = require('./lib/sendNotificationEmails');
-
-/*setInterval(
-  () => create()
-  .then(
-    obs => filter(obs)
-  )
-  .then( 
-    list => sendNotificationEmails(list)
- )
-  ,6000
-)*/
-
+// setInterval(
+//   () => create()
+//   .then(
+//     obs => {
+//       raindata.emit('create');
+//       return filter(obs);
+//     }
+//   )
+//    .then( result => {
+//      var str = result.filter(x=>x).join();
+//      var list = JSON.parse('['+str+']');
+//      sendNotificationEmails(list);
+//     }
+//   )
+//    ,600000
+//  )
 
 module.exports = app;
