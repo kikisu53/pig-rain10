@@ -65,8 +65,10 @@ function renderTimespan() {
 }
 
 function renderAddr() {
+  
   for (let addr in localStorage) {
     let option = document.createElement('option');
+    console.log(localStorage[addr])
     option.text = localStorage[addr];
     option.setAttribute('value', addr);
     addrs.add(option);
@@ -97,7 +99,7 @@ var checkThreshold = (threshold) => {
 }
 
 var list = () => {
-  var city = document.getElementById('city').value,
+  let city = document.getElementById('city').value,
       county = document.getElementById('county').value,
       stop = document.getElementById('stop').value,
       timespan = document.getElementById('timespan').value,
@@ -118,6 +120,7 @@ var list = () => {
 //clear localStorage 
 document.querySelector('.clearRecords').addEventListener('click', function(){
   window.localStorage.clear();
+  addrArr=[];
   document.getElementById('addrs').innerHTML='<option value="">查詢記錄</option>';
   alert('查詢記錄已刪除');
 })
