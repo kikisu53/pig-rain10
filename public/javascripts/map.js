@@ -237,7 +237,7 @@ function useCurrentLocation() {
                 map.setCenter(data);
                 heremark = new google.maps.Marker({
                     position: data,
-                    icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/here.png',
+                    icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/mygps.png',
                     map: map
                 });
             })
