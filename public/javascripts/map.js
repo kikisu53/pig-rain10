@@ -242,7 +242,7 @@ function storageExists(address) {
 function codeAddress() {
     var address = document.getElementById('address').value;
     var addrs = document.querySelector('#addrs');
-    if(addrArr.length !== 0) clearMarkers();
+    if(Object.keys(localStorage).length > 1) clearMarkers();
     if (addressExists(address) && storageExists(address)) {
         var marker = addressExists(address);
         console.log(marker)
