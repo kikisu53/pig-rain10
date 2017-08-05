@@ -16,7 +16,7 @@ const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
 const csrfProtection = csrf({ cookie: true });
 
-// cookieSession secret must be a string.
+// cookieSession secret must be a string.(for csrf)
 const randomsecret= crypto.randomBytes(1024).toString('hex');
 router.use(cookieSession({ secret: randomsecret }));
 
@@ -82,8 +82,9 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
   }
   db.register( {user:user, password:password} )
     .then(result => {
-          req.session = {logined: true, user: user};
-          res.redirect('/');
+          console.log(result)
+    //      req.session = {logined: true, user: user};
+     //     res.redirect('/');
     },
     err => res.render('login',{err:'該帳號已註冊', csrfToken: req.csrfToken()})
   );
