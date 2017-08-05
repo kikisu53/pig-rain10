@@ -86,7 +86,7 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
     //      req.session = {logined: true, user: user};
      //     res.redirect('/');
     },
-    err => res.render('login',{err:'該帳號已註冊', csrfToken: req.csrfToken()})
+    err => res.render('login',{err:'該帳號已註冊。', csrfToken: req.csrfToken()})
   );
 })
 
