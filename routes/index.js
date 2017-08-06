@@ -49,6 +49,22 @@ router.get('/logout', function(req, res, next) {
   res.redirect('/');
 })
 
+router.get('/check/:email/:id', function(req, res, next) {
+  var email = req.params.email,
+      id = req.params.id;
+  return db.pwcheck(email, id) //verify useremail
+    .then(
+      result => {
+        if(!result){
+          return res.send('信箱驗證失敗,請重新註冊');
+        }
+        return res.redirect('/');
+        
+      }
+    )    
+
+})
+
 router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password;
   if(check(user,'email')||check(password,'pw')) return res.render('login',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
