@@ -94,7 +94,7 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
   );
 })
 
-router.get('/check/:user/:id', function(req, res, next) {
+router.get('/check', function(req, res, next) {
   var user = req.param('user'),
       id = req.param('id');
   console.log('varify '+user+' '+id)    
