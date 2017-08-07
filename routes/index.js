@@ -11,7 +11,7 @@ const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
-const varify = require('../lib/varifyEmail');
+const varifyEmail = require('../lib/varifyEmail');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
@@ -84,25 +84,28 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
   db.register( {user:user, password:password} )
     .then(result => {
           console.log(result)
+          console.log(result.varify)
     //      req.session = {logined: true, user: user};
      //     res.redirect('/');
-          varify.varifyEmail(user, result[verify])
-          res.render('login',{err:'已註冊完畢，請至信箱驗證。', csrfToken: req.csrfToken()})
+          varifyEmail(user, result.varify, result.expiration)
+          return res.render('login',{err:'已註冊完畢，請至信箱驗證。', csrfToken: req.csrfToken()})
     },
     err => res.render('login',{err:'該帳號已註冊。', csrfToken: req.csrfToken()})
   );
 })
 
 router.get('/check/:user/:id', function(req, res, next) {
-  var user = req.params.user,
-      id = req.params.id;
-  return db.pwcheck(email, id) //verify useremail
+  var user = req.param('user'),
+      id = req.param('id');
+  console.log('varify '+user+' '+id)    
+  return db.pwcheck(user, id) //verify useremail
     .then(
       result => {
-        if(err){
+        console.log(result)
+        if(!result){
           return res.send('信箱驗證失敗,請重新註冊');
         }
-        db.updateverify({user:user})  
+        db.updatevarify({user:user})  
         return res.redirect('/');
 
       }

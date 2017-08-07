@@ -15,7 +15,6 @@ var index = require('./routes/index');
 var list = require('./routes/list');
 var connect = require('./lib/connect'); //check if the table is exist in dynamodb, if not, crate one.
 var create = require('./lib/create-data'); //get rain data, and save to ./public/data/pig-rain
-var rain = require('./public/data/pig-rain');
 var filter = require('./lib/filter'); //filter which to mail, using rain data
 var sendNotificationEmails = require('./lib/sendNotificationEmails'); // mail to which filter
 
@@ -50,13 +49,13 @@ app.use('/getdata/sse',(req,res) => {
     'Cache-Control': 'no-cache',
     'charset': "UTF-8"
   });
-  var timer = raindata.on('create', () => {
-    res.write('data:'+JSON.stringify(rain)+'\n\n')
-    // !!! this is the important part
-    res.flushHeaders() //flush is deprecated. Use flushHeaders instead.
-  })
+  var listen1 = (obs) => {
+        res.write('data:'+JSON.stringify(obs)+'\n\n');
+        res.flushHeaders();
+  }
+  raindata.on('create', (obs) => listen1(obs))
   res.on('close', function () {
-      timer = null;
+      raindata.removeListener('datachange', listen1);
   })
 });
 
@@ -84,7 +83,7 @@ setInterval(sendEmail, 600000)
 
 function sendEmail() {
    create().then(obs => {
-      raindata.emit('create');
+      raindata.emit('create', obs);
       return filter(obs);
     }).then( result => {
       var str = result.filter(x=>x).join();
