@@ -94,7 +94,7 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
   );
 })
 
-router.get('/check', function(req, res, next) {
+router.get('/check', csrfProtection, function(req, res, next) {
   var user = req.param('user'),
       id = req.param('id');
   console.log('varify '+user+' '+id)    
@@ -103,7 +103,7 @@ router.get('/check', function(req, res, next) {
       result => {
         console.log(result)
         if(!result){
-          return res.send('信箱驗證失敗,請重新註冊');
+          return res.render('register',{err:'信箱驗證失敗，請重新註冊', csrfToken: req.csrfToken()});
         }
         db.updatevarify({user:user})  
         return res.redirect('/');
