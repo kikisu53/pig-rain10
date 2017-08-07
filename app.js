@@ -86,9 +86,9 @@ function sendEmail() {
       raindata.emit('create', obs);
       return filter(obs);
     }).then( result => {
-     var str = result.filter(x=>x).join();
-     var list = JSON.parse('['+str+']');
-     sendNotificationEmails(list);
+      var str = result.filter(x=>x).join();
+      var list = JSON.parse('['+str+']');
+      sendNotificationEmails(list);
     }).catch(err => console.log(err));
 }
 
