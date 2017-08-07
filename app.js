@@ -56,7 +56,7 @@ app.use('/getdata/sse',(req,res) => {
     res.flushHeaders() //flush is deprecated. Use flushHeaders instead.
   })
   res.on('close', function () {
-      clearInterval(timer)
+      timer = null;
   })
 });
 

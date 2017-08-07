@@ -11,12 +11,13 @@ const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
+const varify = require('../lib/varifyEmail');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
 const csrfProtection = csrf({ cookie: true });
 
-// cookieSession secret must be a string.
+// cookieSession secret must be a string.(for csrf)
 const randomsecret= crypto.randomBytes(1024).toString('hex');
 router.use(cookieSession({ secret: randomsecret }));
 
@@ -47,22 +48,6 @@ router.get('/user/:ask', csrfProtection, function(req, res, next) {
 router.get('/logout', function(req, res, next) {
   req.session = {logined: false};
   res.redirect('/');
-})
-
-router.get('/check/:email/:id', function(req, res, next) {
-  var email = req.params.email,
-      id = req.params.id;
-  return db.pwcheck(email, id) //verify useremail
-    .then(
-      result => {
-        if(!result){
-          return res.send('信箱驗證失敗,請重新註冊');
-        }
-        return res.redirect('/');
-        
-      }
-    )    
-
 })
 
 router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
@@ -98,11 +83,31 @@ router.post('/user/register', parseForm, csrfProtection, function(req, res, next
   }
   db.register( {user:user, password:password} )
     .then(result => {
-          req.session = {logined: true, user: user};
-          res.redirect('/');
+          console.log(result)
+    //      req.session = {logined: true, user: user};
+     //     res.redirect('/');
+          varify.varifyEmail(user, result[verify])
+          res.render('login',{err:'已註冊完畢，請至信箱驗證。', csrfToken: req.csrfToken()})
     },
-    err => res.render('login',{err:'該帳號已註冊', csrfToken: req.csrfToken()})
+    err => res.render('login',{err:'該帳號已註冊。', csrfToken: req.csrfToken()})
   );
+})
+
+router.get('/check/:user/:id', function(req, res, next) {
+  var user = req.params.user,
+      id = req.params.id;
+  return db.pwcheck(email, id) //verify useremail
+    .then(
+      result => {
+        if(err){
+          return res.send('信箱驗證失敗,請重新註冊');
+        }
+        db.updateverify({user:user})  
+        return res.redirect('/');
+
+      }
+    )    
+
 })
 
 router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next) {

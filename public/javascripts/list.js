@@ -14,7 +14,7 @@ county.addEventListener('change', () => {
 });
 region.addEventListener('change', () => {
   console.log('hi');
-  showStationById(stop.value);
+  showStopById(stop.value);
 })
 
 var searchBar = document.querySelector('#address');

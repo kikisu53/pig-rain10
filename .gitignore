@@ -1,3 +1,4 @@
 node_modules
 .DS_Store
 mailset.js
+public/data/pig-rain.js

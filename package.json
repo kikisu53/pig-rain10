@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-
-    "start": "nodemon ./bin/www  --ignore 'public/data/*.js'"
-
+    "start": "nodemon ./bin/www  --ignore 'public/data/*.js'",
+    "production": "PORT=80 node ./bin/www"
   },
   "dependencies": {
     "aws-sdk": "^2.86.0",
