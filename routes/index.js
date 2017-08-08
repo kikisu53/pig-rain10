@@ -31,6 +31,7 @@ function isIllegal(str, type){
   if(type==='pw') return !pwRule.test(str);
   if(type==='email') return !emailRule.test(str);
 }
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   req.session && req.session.logined
