@@ -51,8 +51,15 @@ router.get('/user/login', csrfProtection, function(req, res, next) {
     message: req.flash('message')
   });
 });
-router.get('/user/changepw', loginCheck, function(req, res, next) {
+router.get('/user/changepw', loginCheck, csrfProtection, function(req, res, next) {
   res.render('changepw', {
+    message: req.flash('message'),
+    csrfToken: req.csrfToken(),
+    user: req.session.user
+  });
+});
+router.get('/user/forgetpw', csrfProtection, function(req, res, next) {
+  res.render('forgetpw', {
     csrfToken: req.csrfToken()
   });
 });
@@ -162,12 +169,19 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
 router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password, pw1 = req.body.password01, oldpw = req.body.oldpw;
   if( password!==pw1  || isIllegal(user,'email') || isIllegal(password,'pw' || isIllegal(oldpw,'pw')) ) {
-    return res.render('changepw',{err:'輸入資料錯誤', user:req.session.user, csrfToken: req.csrfToken()});
+    req.flash('message', '輸入資料錯誤');
+    res.redirect('/user/changepw');
+    return;
   }
   db.changepw( {user:user, password:password, oldpw:oldpw} )
   .then(result => {
-      if(result===2) return res.redirect('/');
-      res.render('changepw', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
+      if(result===2) {
+        console.log('change password: succeed')
+        return res.redirect('/');
+      }
+      req.flash('message', '帳號密碼錯誤');
+      res.redirect('/user/changepw');
+      return;
   })
 })
 
