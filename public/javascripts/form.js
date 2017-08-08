@@ -47,16 +47,3 @@ var register = () => {
   }
   return true;
 }
-
-//login_form
-var login = () => {
-  var email = document.getElementById('user').value,
-      pw = document.getElementById('password').value;
-  if(pw === '' || email === ''){
-    document.getElementById('notice_login').innerHTML='帳號或密碼有誤';
-    return false;
-  }
-  return true;
-}
-
-

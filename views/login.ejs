@@ -7,23 +7,24 @@
   <title>Pig Weather clock</title>
   <script src="/javascripts/form.js"></script>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <script>
-    var err = '<%= err %>';
-    if (err !== '') alert(err);
-  </script>
+  
 </head>
-
 <body>
   <div class='container' align='center'>
     <h1>Pig Weather</h1>
     <h2>Let you know where rain and when rain</h2>
     <div class='content'>
+      <% if (message.length > 0) { %>
+      <div class="box flash">
+        <p><%= message %></p>
+      </div>
+      <% } %>
       <div class="box">
         <h3>會員登入</h3>
-        <form action="/user/login" onsubmit="return login();" method="post">
+        <form action="/user/login" method="post">
           <span id='notice_login'></span><br>
-          <input placeholder="Email" id='user' type="text" name="user"></p><br>
-          <input placeholder="Password" id='password' type="password" name="password"></p><br>
+          <input required placeholder="Email" id='user' type="email" name="user"></p><br>
+          <input required placeholder="Password" id='password' type="password" name="password"></p><br>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <input class='button' type="submit" value="登入"><br>
           <p><a href="/user/register">註冊</a>或<a href="/user/forgetpw">忘記密碼</a></p>
