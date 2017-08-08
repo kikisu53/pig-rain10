@@ -50,8 +50,8 @@ app.use('/getdata/sse',(req,res) => {
     'charset': "UTF-8"
   });
   var listen1 = (obs) => {
-        res.write('data:'+JSON.stringify(obs)+'\n\n');
-        res.flushHeaders();
+    res.write('data:'+JSON.stringify(obs)+'\n\n');
+    res.flushHeaders();
   }
   raindata.on('create', (obs) => listen1(obs))
   res.on('close', function () {

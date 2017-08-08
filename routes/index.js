@@ -10,8 +10,8 @@ const nodemailer = require('nodemailer');
 const mailset = require('./mailset');
 const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
-const rain = require('../lib/create-data');
 const varifyEmail = require('../lib/varifyEmail');
+const sesSendEmail = require('../lib/sesSendEmail');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
@@ -41,7 +41,9 @@ router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
   req.session && req.session.logined
-  ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
+  ? ask === 'changepw' 
+    ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) 
+    : res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
 })
 
@@ -62,7 +64,9 @@ router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
           break;
           case 2:
             req.session = {logined: true, user:user};
-            res.redirect('list');
+            // '/list' => /list, 'list' => /user/list
+            // ref: http://expressjs.com/zh-tw/4x/api.html#res.redirect
+            res.redirect('/list'); 
           break;
           case 3:
             res.render('login', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
@@ -120,18 +124,12 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
   db.forgetpw( {user:user, password:pw} )
   .then(
     result => {
-      var mailOptions = {
-        from: mailset.auth.user,
-        to: user,
-        subject: 'Pig Weather: Reset you password',
-        text: 'Your new password is ' + pw +'. \r\n'
-            + 'Please use the new password login, and change you password as soon as possible.'
-      };
-      transporter.sendMail(mailOptions, (err, info) =>
-        err
-        ? res.render('forgetpw',{err:'Error', csrfToken: req.csrfToken()})
-        : res.render('login', {err:'新密碼發送到帳號信箱，請使用新密碼登入，並盡快修改密碼。', csrfToken: req.csrfToken()})
-      );
+      if(result===2){
+        subjectText = 'Pig-Rain: new password';
+        contentHTML = '您的新密碼為'+pw+'。請使用新密碼登入，並修改密碼。'
+        sesSendEmail([user], subjectText, contentHTML);
+      }
+      res.render('login', {err:'新密碼發送到帳號信箱，請使用新密碼登入，並盡快修改密碼。', csrfToken: req.csrfToken()})
     },
     err => res.render('forgetpw',{err:'帳號錯誤', csrfToken: req.csrfToken()})
   )

@@ -1,21 +1,7 @@
 // same as list.js
 // const city = document.querySelector('#city');
-// renderCity();
 // const county = document.querySelector('#county');
 // const stop = document.querySelector('#stop');
-// city.addEventListener('change', () => {
-//   renderCounty();
-//   renderStations();
-//   initMap();
-// });
-// county.addEventListener('change', ()=>{
-//   renderStation();
-//   initMap();
-// });
-// renderTimespan();
-// stop.addEventListener('change', ()=>{
-//   initMap();
-// });
 
 function showStationById(id) {
     key = false;
@@ -281,10 +267,40 @@ function findGPS(addr){
     return new Promise((res,rej) => 
         geocoder.geocode( { 'address': addr }, function(results, status) {
             if (status == 'OK') res(results[0].geometry.location);
-            console.log(status);
         })
     );
 
+// when user ask his GPS, the cneter of Map = user's GPS, and mark it.
+document.querySelector('.getLocation').addEventListener('click', useCurrentLocation);
+function useCurrentLocation() {
+    getUserLocation()
+    .then(data => {
+        if(data.err) return alert(data.err);
+        alert('為您定位中');
+        map.setCenter(data);
+        heremark = new google.maps.Marker({
+            position: data,
+            icon: 'https://s3-us-west-2.amazonaws.com/bh7tjgl2y35m6ivs/pig-cwb/mygps.png',
+            map: map
+        });
+    })
+}
+
+// safari 10.0 以上版本的geolocation API只接受https連線請求
+function getUserLocation() {
+    return new Promise((res, rej) =>
+        navigator.geolocation
+        ? navigator.geolocation.getCurrentPosition(
+            position => {
+                var lat = position.coords.latitude, lng = position.coords.longitude;
+               (lat > 20 && lat < 27 && lng > 116 && lat < 122)
+               ? res({lat: lat, lng: lng })
+               : res({ err: '您的位置不在服務範圍內'})
+            },
+            err => rej(err.code)
+        )
+        : alert('無法偵測到您到位置')
+    )
 }
 
 //update rain data, when rain data change
