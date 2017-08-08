@@ -12,18 +12,19 @@ const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const rain = require('../lib/create-data');
 const varifyEmail = require('../lib/varifyEmail');
+const loginCheck = require('../lib/logincheck');
 
 const router = express.Router();
 const parseForm = bodyParser.urlencoded({ extended: false })
 const csrfProtection = csrf({ cookie: true });
 
-// cookieSession secret must be a string.(for csrf)
+// cookieSession secret must be a string.(for csrf)???
 const randomsecret= crypto.randomBytes(1024).toString('hex');
 router.use(cookieSession({ secret: randomsecret }));
 
 //type: email, pw
 //illegel data return true
-function check(str, type){
+function isIllegal(str, type){
   if(str==='') return true;
   var emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
   var pwRule =  /^(?=.*\d)(?=.*[A-Za-z]).{6,12}$/;
@@ -37,14 +38,24 @@ router.get('/', function(req, res, next) {
   : res.redirect('user/login')
 });
 
-router.get('/user/:ask', csrfProtection, function(req, res, next) {
-  var user = req.session.user;
-  ask = req.params.ask;
-  req.session && req.session.logined
-  ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
-  : res.render(ask,{err:'', csrfToken: req.csrfToken()})
-})
-
+// router.get('/user/:ask', csrfProtection, function(req, res, next) {
+//   var user = req.session.user;
+//   ask = req.params.ask;
+//   req.session && req.session.logined
+//   ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
+//   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
+// })
+router.get('/user/login', csrfProtection, function(req, res, next) {
+  res.render('login', {
+    csrfToken: req.csrfToken(),
+    message: req.flash('message')
+  });
+});
+router.get('/user/changepw', loginCheck, function(req, res, next) {
+  res.render('changepw', {
+    csrfToken: req.csrfToken()
+  });
+});
 router.get('/logout', function(req, res, next) {
   req.session = {logined: false};
   res.redirect('/');
@@ -52,23 +63,34 @@ router.get('/logout', function(req, res, next) {
 
 router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password;
-  if(check(user,'email')||check(password,'pw')) return res.render('login',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
+  if(isIllegal(user,'email')||isIllegal(password,'pw')) {
+    req.flash('message', '輸入資料的格式錯誤');
+    res.redirect('/user/login');
+    return;
+  }
   db.login( {user:user, password:password} )
     .then(
       result => {
+        console.log(`result: ${result}`);
         switch(result){
           case 0:
-            res.render('login', {err:'帳號不存在', csrfToken: req.csrfToken()});
+            req.flash('message', '帳號不存在');
+            res.redirect('/user/login');
+            return;
           break;
           case 2:
             req.session = {logined: true, user:user};
-            res.redirect('list');
+            res.redirect('/list');
           break;
           case 3:
-            res.render('login', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
+            req.flash('message', '帳號密碼錯誤');
+            res.redirect('/user/login');
+            return;
           break;
           default:
-            res.render('login', {err:'Error', csrfToken: req.csrfToken()});
+            req.flash('message', 'default error');
+            res.redirect('/user/login');
+            return;
           break;
         }
       },
@@ -78,7 +100,7 @@ router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
 
 router.post('/user/register', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password, pw1 = req.body.password01;
-  if( password!==pw1  || check(user,'email') || check(password,'pw') ) {
+  if( password!==pw1  || isIllegal(user,'email') || isIllegal(password,'pw') ) {
     return res.render('register',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
   }
   db.register( {user:user, password:password} )
@@ -115,7 +137,7 @@ router.get('/check', csrfProtection, function(req, res, next) {
 
 router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user;
-  if(check(user,'email')) return res.render('forgetpw',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
+  if(isIllegal(user,'email')) return res.render('forgetpw',{err:'輸入資料錯誤', csrfToken: req.csrfToken()});
   var pw = crypto.randomBytes(4).toString('hex');
   db.forgetpw( {user:user, password:pw} )
   .then(
@@ -139,7 +161,7 @@ router.post('/user/forgetpw', parseForm, csrfProtection, function(req, res, next
 
 router.post('/user/changepw', parseForm, csrfProtection, function(req, res, next) {
   var user = req.body.user, password = req.body.password, pw1 = req.body.password01, oldpw = req.body.oldpw;
-  if( password!==pw1  || check(user,'email') || check(password,'pw' || check(oldpw,'pw')) ) {
+  if( password!==pw1  || isIllegal(user,'email') || isIllegal(password,'pw' || isIllegal(oldpw,'pw')) ) {
     return res.render('changepw',{err:'輸入資料錯誤', user:req.session.user, csrfToken: req.csrfToken()});
   }
   db.changepw( {user:user, password:password, oldpw:oldpw} )

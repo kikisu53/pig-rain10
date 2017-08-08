@@ -17,16 +17,10 @@ var connect = require('./lib/connect'); //check if the table is exist in dynamod
 var create = require('./lib/create-data'); //get rain data, and save to ./public/data/pig-rain
 var filter = require('./lib/filter'); //filter which to mail, using rain data
 var sendNotificationEmails = require('./lib/sendNotificationEmails'); // mail to which filter
+var loginCheck = require('./lib/loginCheck');
 
 var app = express();
 
-function loginCheck(req, res, next) {
-  if (!req.session.logined || !req.session.user) {
-    res.redirect('/');
-    return;
-  }
-  next();
-}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -41,8 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/list', loginCheck);
-app.use('/list', list);
+app.use('/list', loginCheck, list);
 app.use('/getdata/sse',(req,res) => {
   res.set({
     'content-type': 'text/event-stream',
