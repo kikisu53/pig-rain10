@@ -41,7 +41,9 @@ router.get('/user/:ask', csrfProtection, function(req, res, next) {
   var user = req.session.user;
   ask = req.params.ask;
   req.session && req.session.logined
-  ? ask === 'changepw' ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) : res.redirect('/')
+  ? ask === 'changepw' 
+    ? res.render(ask,{err:'', csrfToken: req.csrfToken(),user: req.session.user}) 
+    : res.redirect('/')
   : res.render(ask,{err:'', csrfToken: req.csrfToken()})
 })
 
@@ -62,7 +64,9 @@ router.post('/user/login', parseForm, csrfProtection, function(req, res, next) {
           break;
           case 2:
             req.session = {logined: true, user:user};
-            res.redirect('list');
+            // '/list' => /list, 'list' => /user/list
+            // ref: http://expressjs.com/zh-tw/4x/api.html#res.redirect
+            res.redirect('/list'); 
           break;
           case 3:
             res.render('login', {err:'帳號密碼錯誤', csrfToken: req.csrfToken()});
