@@ -64,6 +64,7 @@ function initMap(stopId) {
 }
 
 document.querySelector('.getLocation').addEventListener('click', useCurrentLocation);
+
 function useCurrentLocation() {
     if (navigator.geolocation) {
         return getUserLocation()
