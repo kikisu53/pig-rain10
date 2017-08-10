@@ -3,12 +3,7 @@ const csrf = require('csurf');
 const crypto = require('crypto');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser'); // for post
-const nodemailer = require('nodemailer');
 
-//避免信箱密碼公開，請自行修改mailset-sample.js，並改檔名為mail
-//mail.js 已設定成 gitignore
-const mailset = require('./mailset');
-const transporter = nodemailer.createTransport(mailset);
 const db = require('../lib/db-index');
 const varifyEmail = require('../lib/varifyEmail');
 const sesSendEmail = require('../lib/sesSendEmail');

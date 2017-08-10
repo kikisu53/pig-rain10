@@ -269,6 +269,7 @@ function findGPS(addr){
             if (status == 'OK') res(results[0].geometry.location);
         })
     );
+}
 
 // when user ask his GPS, the cneter of Map = user's GPS, and mark it.
 document.querySelector('.getLocation').addEventListener('click', useCurrentLocation);
@@ -309,7 +310,7 @@ function sse(){
         var source = new EventSource("/getdata/sse");
         source.onmessage = function(event) {
             pigRain = JSON.parse(event.data);
-        };
+        }
     }
 }
 sse();
